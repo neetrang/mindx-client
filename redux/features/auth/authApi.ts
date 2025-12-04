@@ -1,16 +1,39 @@
 import { apiSlice } from "../api/apiSlice";
 import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
 
+type User = {
+  _id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role?: string;
+};
+
 type RegistrationResponse = {
   message: string;
   activationToken: string;
 };
 
-type RegistrationData = {};
+type RegistrationData = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+type LoginData = {
+  email: string;
+  password: string;
+};
+
+type SocialAuthData = {
+  email: string;
+  name: string;
+  avatar: string;
+};
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // endpoints here
+    // Đăng ký
     register: builder.mutation<RegistrationResponse, RegistrationData>({
       query: (data) => ({
         url: "registration",
@@ -23,32 +46,30 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             userRegistration({
-              token: result.data.activationToken,
+              activationToken: result.data.activationToken,
             })
           );
-        } catch (error: any) {
+        } catch (error) {
           console.log(error);
         }
       },
     }),
+
+    // Kích hoạt tài khoản
     activation: builder.mutation({
-      query: ({ activation_token, activation_code }) => ({
+      query: ({ activation_token, activation_code }: { activation_token: string; activation_code: string }) => ({
         url: "activate-user",
         method: "POST",
-        body: {
-          activation_token,
-          activation_code,
-        },
+        body: { activation_token, activation_code },
       }),
     }),
+
+    // Login
     login: builder.mutation({
-      query: ({ email, password }) => ({
+      query: (data: LoginData) => ({
         url: "login",
         method: "POST",
-        body: {
-          email,
-          password,
-        },
+        body: data,
         credentials: "include" as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -56,24 +77,22 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
               user: result.data.user,
+              accessToken: result.data.accessToken,
             })
           );
-        } catch (error: any) {
+        } catch (error) {
           console.log(error);
         }
       },
     }),
+
+    // Social login
     socialAuth: builder.mutation({
-      query: ({ email, name, avatar }) => ({
+      query: (data: SocialAuthData) => ({
         url: "social-auth",
         method: "POST",
-        body: {
-          email,
-          name,
-          avatar,
-        },
+        body: data,
         credentials: "include" as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -81,15 +100,17 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
               user: result.data.user,
+              accessToken: result.data.accessToken,
             })
           );
-        } catch (error: any) {
+        } catch (error) {
           console.log(error);
         }
       },
     }),
+
+    // Logout
     logOut: builder.query({
       query: () => ({
         url: "logout",
@@ -98,10 +119,8 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch }) {
         try {
-          dispatch(
-            userLoggedOut()
-          );
-        } catch (error: any) {
+          dispatch(userLoggedOut());
+        } catch (error) {
           console.log(error);
         }
       },
@@ -114,5 +133,5 @@ export const {
   useActivationMutation,
   useLoginMutation,
   useSocialAuthMutation,
-  useLogOutQuery
+  useLogOutQuery,
 } = authApi;

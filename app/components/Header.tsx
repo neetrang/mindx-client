@@ -35,28 +35,37 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
     skip: !logout ? true : false,
   });
 
-  useEffect(() => {
-    if(!isLoading){
-      if (!userData) {
-        if (data) {
-          socialAuth({
-            email: data?.user?.email,
-            name: data?.user?.name,
-            avatar: data.user?.image,
-          });
-          refetch();
+useEffect(() => {
+  const handleSocialLogin = async () => {
+    // Chỉ chạy khi userData chưa có nhưng session next-auth có data
+    if (!isLoading && !userData && data?.user) {
+      const email = data.user.email ?? "";
+      const name = data.user.name ?? "";
+      const avatar = data.user.image ?? "";
+
+      // Kiểm tra nếu email/name/avatar rỗng thì không gọi
+      if (!email || !name || !avatar) return;
+
+      try {
+        const result = await socialAuth({ email, name, avatar }).unwrap();
+        if (result) {
+          toast.success("Login successfully via social account");
+          refetch(); // lấy lại userData từ server
         }
-      }
-      if(data === null){
-        if(isSuccess){
-          toast.success("Login Successfully");
-        }
-      }
-      if(data === null && !isLoading && !userData){
-          setLogout(true);
+      } catch (err: any) {
+        console.error("Social login error:", err?.data?.message || err.message);
       }
     }
-  }, [data, userData,isSuccess]);
+
+    // Nếu session hết, logout local
+    if (!isLoading && !data && !userData) {
+      setLogout(true);
+    }
+  };
+
+  handleSocialLogin();
+}, [data, userData, isLoading, refetch, socialAuth]);
+
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {

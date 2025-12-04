@@ -1,29 +1,41 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IUserState {
-  accessToken: string;
-  user: any; // hoặc định nghĩa type IUser nếu bạn có
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role?: string;
 }
 
-const initialState: IUserState = {
-  accessToken: "",
+interface AuthState {
+  activationToken: string;
+  user: User | null;
+  accessToken: string;
+}
+
+const initialState: AuthState = {
+  activationToken: "",
   user: null,
+  accessToken: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    userRegistration: (state, action: PayloadAction<{ accessToken: string }>) => {
-      state.accessToken = action.payload.accessToken;
+    userRegistration: (state, action: PayloadAction<{ activationToken: string }>) => {
+      state.activationToken = action.payload.activationToken;
     },
-    userLoggedIn: (state, action: PayloadAction<{ accessToken: string; user: any }>) => {
-      state.accessToken = action.payload.accessToken;
+    userLoggedIn: (state, action: PayloadAction<{ user: User; accessToken: string }>) => {
       state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
+      state.activationToken = ""; // reset token khi login
     },
     userLoggedOut: (state) => {
-      state.accessToken = "";
       state.user = null;
+      state.accessToken = "";
+      state.activationToken = "";
     },
   },
 });
