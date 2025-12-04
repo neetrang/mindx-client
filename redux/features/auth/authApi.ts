@@ -45,10 +45,10 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(
-            userRegistration({
-              activationToken: result.data.activationToken,
-            })
-          );
+          userRegistration({
+            activationToken: result.data.activationToken,
+          })
+        );
         } catch (error) {
           console.log(error);
         }
