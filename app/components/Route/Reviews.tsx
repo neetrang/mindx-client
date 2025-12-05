@@ -12,7 +12,7 @@ export const reviews = [
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     profession: "Student | Cambridge university",
     comment:
-    "I had the pleasure of exploring MindX, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience, as the website offers a comprehensive selection of courses that cater to different skill levels and interests. If you're looking to enhance your knowledge and skills in the tech industry, I highly recommend checking out MindX!",
+    "I had the pleasure of exploring MyLearning, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience, as the website offers a comprehensive selection of courses that cater to different skill levels and interests. If you're looking to enhance your knowledge and skills in the tech industry, I highly recommend checking out MyLearning!",
 },
   {
     name: "Verna Santos",
@@ -32,7 +32,7 @@ export const reviews = [
     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     profession: "Junior Web Developer | Indonesia",
     comment:
-    "I had the pleasure of exploring MindX, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience",
+    "I had the pleasure of exploring MyLearning, a website that provides an extensive range of courses on various tech-related topics. I was thoroughly impressed with my experience",
 },
   {
     name: "Rosemary Smith",
@@ -46,7 +46,7 @@ export const reviews = [
     avatar: "https://randomuser.me/api/portraits/women/4.jpg",
     profession: "Full stack web developer | Canada",
     comment:
-    "Join MindX! MindX focuses on practical applications rather than just teaching the theory behind programming languages or frameworks. I took a lesson on creating a web marketplace using React JS, and it was very helpful in teaching me the different stages involved in creating a project from start to finish. Overall, I highly recommend MindX to anyone looking to improve their programming skills and build practical projects. MindX is a great resource that will help you take your skills to the next level.",
+    "Join MyLearning! MyLearning focuses on practical applications rather than just teaching the theory behind programming languages or frameworks. I took a lesson on creating a web marketplace using React JS, and it was very helpful in teaching me the different stages involved in creating a project from start to finish. Overall, I highly recommend MyLearning to anyone looking to improve their programming skills and build practical projects. MyLearning is a great resource that will help you take your skills to the next level.",
 },
 ];
 

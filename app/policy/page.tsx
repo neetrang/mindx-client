@@ -15,8 +15,8 @@ const Page = (props: Props) => {
   return (
     <div>
       <Heading
-        title="Policy - MindX"
-        description="MindX is a learning management system for helping programmers."
+        title="Policy - MyLearning"
+        description="MyLearning is a learning management system for helping programmers."
         keywords="programming,mern"
       />
       <Header

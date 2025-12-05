@@ -121,7 +121,7 @@ const Sidebar = () => {
               >
                <Link href="/" className="block">
                <h3 className="text-[25px] font-Poppins  dark:text-white text-black">
-                  MindX
+                  MyLearning
                 </h3>
                </Link>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)} className="inline-block">

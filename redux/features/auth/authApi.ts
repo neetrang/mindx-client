@@ -1,39 +1,16 @@
 import { apiSlice } from "../api/apiSlice";
 import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
 
-type User = {
-  _id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  role?: string;
-};
-
 type RegistrationResponse = {
   message: string;
   activationToken: string;
 };
 
-type RegistrationData = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-type LoginData = {
-  email: string;
-  password: string;
-};
-
-type SocialAuthData = {
-  email: string;
-  name: string;
-  avatar: string;
-};
+type RegistrationData = {};
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Đăng ký
+    // endpoints here
     register: builder.mutation<RegistrationResponse, RegistrationData>({
       query: (data) => ({
         url: "registration",
@@ -45,31 +22,33 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
           dispatch(
-          userRegistration({
-            activationToken: result.data.activationToken,
-          })
-        );
-        } catch (error) {
+            userRegistration({
+              token: result.data.activationToken,
+            })
+          );
+        } catch (error: any) {
           console.log(error);
         }
       },
     }),
-
-    // Kích hoạt tài khoản
     activation: builder.mutation({
-      query: ({ activation_token, activation_code }: { activation_token: string; activation_code: string }) => ({
+      query: ({ activation_token, activation_code }) => ({
         url: "activate-user",
         method: "POST",
-        body: { activation_token, activation_code },
+        body: {
+          activation_token,
+          activation_code,
+        },
       }),
     }),
-
-    // Login
     login: builder.mutation({
-      query: (data: LoginData) => ({
+      query: ({ email, password }) => ({
         url: "login",
         method: "POST",
-        body: data,
+        body: {
+          email,
+          password,
+        },
         credentials: "include" as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -77,22 +56,24 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              user: result.data.user,
               accessToken: result.data.accessToken,
+              user: result.data.user,
             })
           );
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       },
     }),
-
-    // Social login
     socialAuth: builder.mutation({
-      query: (data: SocialAuthData) => ({
+      query: ({ email, name, avatar }) => ({
         url: "social-auth",
         method: "POST",
-        body: data,
+        body: {
+          email,
+          name,
+          avatar,
+        },
         credentials: "include" as const,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -100,17 +81,15 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              user: result.data.user,
               accessToken: result.data.accessToken,
+              user: result.data.user,
             })
           );
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
         }
       },
     }),
-
-    // Logout
     logOut: builder.query({
       query: () => ({
         url: "logout",
@@ -119,8 +98,10 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch }) {
         try {
-          dispatch(userLoggedOut());
-        } catch (error) {
+          dispatch(
+            userLoggedOut()
+          );
+        } catch (error: any) {
           console.log(error);
         }
       },
@@ -133,5 +114,5 @@ export const {
   useActivationMutation,
   useLoginMutation,
   useSocialAuthMutation,
-  useLogOutQuery,
+  useLogOutQuery
 } = authApi;

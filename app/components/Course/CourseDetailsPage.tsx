@@ -23,9 +23,9 @@ const CourseDetailsPage = ({ id }: Props) => {
       ) : (
         <div>
           <Heading
-            title={data?.course?.name + " - MindX"}
+            title={data?.course?.name + " - MyLearning"}
             description={
-              "MindX is a programming community which is developed by shahriar sajeeb for helping programmers"
+              "myLearning is a programming community which is developed by shahriar sajeeb for helping programmers"
             }
             keywords={data?.course?.tags}
           />

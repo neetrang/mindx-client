@@ -17,8 +17,8 @@ const Page:FC<Props>=()=>{
     
     <div>
       <Heading
-        title="MindX"
-        description='MindX is a platform for students to learn and get help from teachers'
+        title="My Learning"
+        description='MyLearning is a platform for students to learn and get help from teachers'
         keywords='Programing'
       />
     <Header

@@ -108,7 +108,7 @@ const Footer = (props: Props) => {
         </div>
         <br />
         <p className="text-center text-black dark:text-white">
-          Copyright © 2025 MindX | All Rights Reserved
+          Copyright © 2025 MyLearning | All Rights Reserved
         </p>
       </div>
       <br />
