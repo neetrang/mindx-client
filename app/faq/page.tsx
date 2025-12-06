@@ -15,9 +15,9 @@ const Page = (props: Props) => {
   return (
     <div className="min-h-screen">
       <Heading
-        title="FAQ - MyLearning"
-        description="MyLearning is a learning management system for helping programmers."
-        keywords="programming,mern"
+        title="Câu hỏi thường gặp - MindX"
+        description="MindX là hệ thống quản lý học tập giúp các lập trình viên học tập hiệu quả."
+        keywords="lập trình, mern"
       />
       <Header
         open={open}

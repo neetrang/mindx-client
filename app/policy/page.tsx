@@ -15,9 +15,9 @@ const Page = (props: Props) => {
   return (
     <div>
       <Heading
-        title="Policy - MyLearning"
-        description="MyLearning is a learning management system for helping programmers."
-        keywords="programming,mern"
+        title="Chính sách - MindX"
+        description="MindX là hệ thống quản lý học tập giúp các lập trình viên học tập hiệu quả."
+        keywords="lập trình, mern"
       />
       <Header
         open={open}

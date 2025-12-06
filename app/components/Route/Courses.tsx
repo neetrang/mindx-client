@@ -16,16 +16,20 @@ const Courses = (props: Props) => {
     <div>
       <div className={`w-[90%] 800px:w-[80%] m-auto`}>
         <h1 className="text-center font-Poppins text-[25px] leading-[35px] sm:text-3xl lg:text-4xl dark:text-white 800px:!leading-[60px] text-[#000] font-[700] tracking-tight">
-          Expand Your Career <span className="text-gradient">Opportunity</span>{" "}
-          <br />
-          Opportunity With Our Courses
+          Mở Rộng Cơ Hội <span className="text-gradient">Nghề Nghiệp</span> <br />
+          Cơ Hội Với Các Khóa Học Của Chúng Tôi
         </h1>
         <br />
         <br />
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 1500px:grid-cols-4 1500px:gap-[35px] mb-12 border-0">
           {courses &&
             courses.map((item: any, index: number) => (
-              <CourseCard item={item} key={index} />
+              <div
+                key={index}
+                className="transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#39c1f3]/40 rounded-xl"
+              >
+                <CourseCard item={item} />
+              </div>
             ))}
         </div>
       </div>

@@ -6,52 +6,33 @@ const About = () => {
     <div className="text-black dark:text-white">
       <br />
       <h1 className={`${styles.title} 800px:!text-[45px]`}>
-        What is <span className="text-gradient">MyLearning?</span>
+        MindX <span className="text-gradient">là gì?</span>
       </h1>
 
       <br />
       <div className="w-[95%] 800px:w-[85%] m-auto">
         <p className="text-[18px] font-Poppins">
-          Are you ready to take your programming skills to the next level? Look
-          no further than MyLearning, the premier programming community
-          dedicated to helping new programmers achieve their goals and reach
-          their full potential.
+          Bạn đã sẵn sàng nâng cao kỹ năng lập trình của mình lên một tầm cao mới chưa? Hãy đến với MindX, cộng đồng lập trình hàng đầu được thiết kế để giúp những lập trình viên mới đạt được mục tiêu và phát huy tối đa tiềm năng của mình.
           <br />
           <br />
-          As the founder and CEO of MyLearning, I know firsthand the challenges
-          that come with learning and growing in the programming industry.
-          That&apos;s why I created MyLearning &ndash; to provide new
-          programmers with the resources and support they need to succeed.
+          Là người sáng lập kiêm CEO của MindX, tôi hiểu rõ những thách thức khi học tập và phát triển trong ngành lập trình. Đó là lý do tôi tạo ra MindX – để cung cấp cho các lập trình viên mới những tài nguyên và sự hỗ trợ cần thiết để thành công.
           <br />
           <br />
-
-          At MyLearning, we believe that price should never be a barrier to
-          achieving your dreams. That&apos;s why our courses are priced low
-          &ndash; so that anyone, regardless of their financial situation, can
-          access the tools and knowledge they need to succeed.
+          Tại MindX, chúng tôi tin rằng chi phí không bao giờ nên là rào cản để đạt được ước mơ của bạn. Vì vậy, các khóa học của chúng tôi có mức giá thấp – để bất kỳ ai, bất kể tình hình tài chính, đều có thể tiếp cận những công cụ và kiến thức cần thiết để thành công.
           <br />
           <br />
-          But MyLearning is more than just a community &ndash; we&apos;re a
-          family. Our supportive community of like-minded individuals is here to
-          help you every step of the way, whether you&apos;re just starting out
-          or looking to take your skills to the next level.
+          Nhưng MindX không chỉ là một cộng đồng – chúng tôi là một gia đình. Cộng đồng hỗ trợ của chúng tôi gồm những người cùng chí hướng sẽ đồng hành cùng bạn trên mọi bước đường, dù bạn mới bắt đầu hay muốn nâng cao kỹ năng của mình.
           <br />
           <br />
-          With MyLearning by your side, there&apos;s nothing standing between
-          you and your dream job. Our courses and community will provide you
-          with the guidance, support, and motivation you need to unleash your
-          full potential and become a skilled programmer.
+          Với MindX bên cạnh, không gì có thể ngăn bạn chạm tới công việc mơ ước. Các khóa học và cộng đồng của chúng tôi sẽ cung cấp cho bạn hướng dẫn, sự hỗ trợ và động lực để phát huy tối đa tiềm năng và trở thành lập trình viên giỏi.
           <br />
           <br />
-          So what are you waiting for? Join the MyLearning family today and
-          let&apos;s conquer the programming industry together! With our
-          affordable courses, informative videos, and supportive community, the
-          sky&apos;s the limit.
+          Vậy bạn còn chờ gì nữa? Hãy gia nhập gia đình MindX ngay hôm nay và cùng nhau chinh phục ngành lập trình! Với các khóa học giá cả phải chăng, video hướng dẫn hữu ích và cộng đồng hỗ trợ, bầu trời là giới hạn duy nhất.
         </p>
         <br />
-        <span className="text-[22px]">SujalVerma&apos;s</span>
+        <span className="text-[22px]">MaiTrang&apos;s</span>
         <h5 className="text-[18px] font-Poppins">
-          Founder and CEO of MyLearning
+          Người sáng lập kiêm CEO của MindX
         </h5>
         <br />
         <br />

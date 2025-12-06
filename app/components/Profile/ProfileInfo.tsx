@@ -2,11 +2,11 @@ import Image from "next/image";
 import { styles } from "../../../app/styles/style";
 import React, { FC, useEffect, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
-import avatarIcon from "../../../public/assets/client-3.jpg";
+import avatarIcon from "../../../public/assets/client-3.png";
 
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
-import { useUpdateAvatarMutation , useEditProfileMutation} from "@/redux/features/user/userApi";
+import { useUpdateAvatarMutation, useEditProfileMutation } from "@/redux/features/user/userApi";
 
 type Props = {
   avatar: string | null;
@@ -37,13 +37,13 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       setLoadUser(true);
     }
     if (error || updateError) {
-      console.log(error);
+      console.log(error || updateError);
     }
-    if(success){
-      toast.success("Profile updated successfully!");
+    if (success) {
+      toast.success("Cập nhật hồ sơ thành công!");
       setLoadUser(true);
     }
-  }, [isSuccess, error,success, updateError]);
+  }, [isSuccess, error, success, updateError]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -67,7 +67,6 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
           />
           <input
             type="file"
-            name=""
             id="avatar"
             className="hidden"
             onChange={imageHandler}
@@ -86,7 +85,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
         <form onSubmit={handleSubmit}>
           <div className="800px:w-[50%] m-auto block pb-4">
             <div className="w-[100%]">
-              <label className="block pb-2">Full Name</label>
+              <label className="block pb-2">Họ và Tên</label>
               <input
                 type="text"
                 className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
@@ -96,7 +95,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
               />
             </div>
             <div className="w-[100%] pt-2">
-              <label className="block pb-2">Email Address</label>
+              <label className="block pb-2">Email</label>
               <input
                 type="text"
                 readOnly
@@ -108,7 +107,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
             <input
               className={`w-full 800px:w-[250px] h-[40px] border border-[#37a39a] text-center dark:text-[#fff] text-black rounded-[3px] mt-8 cursor-pointer`}
               required
-              value="Update"
+              value="Cập nhật"
               type="submit"
             />
           </div>

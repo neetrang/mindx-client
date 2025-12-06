@@ -8,6 +8,7 @@ import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
+
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -26,7 +27,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   const [audio] = useState<any>(
     typeof window !== "undefined" &&
       new Audio(
-        "https://res.cloudinary.com/sujalverma/video/upload/v1741010116/mixkit-sci-fi-click-900_as8zyk.wav" 
+        "https://res.cloudinary.com/sujalverma/video/upload/v1741010116/mixkit-sci-fi-click-900_as8zyk.wav"
       )
   );
 
@@ -44,7 +45,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
       refetch();
     }
     audio.load();
-  }, [data, isSuccess,audio]);
+  }, [data, isSuccess, audio]);
 
   useEffect(() => {
     socketId.on("newNotification", (data) => {
@@ -72,7 +73,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
       {open && (
         <div className="w-[350px] h-[60vh] overflow-y-scroll py-3 px-2 border border-[#ffffff0c] dark:bg-[#111C43] bg-white shadow-xl absolute top-16 z-[1000000000] rounded">
           <h5 className="text-center text-[20px] font-Poppins text-black dark:text-white p-3">
-            Notifications
+            Thông Báo
           </h5>
           {notifications &&
             notifications.map((item: any, index: number) => (
@@ -86,7 +87,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                     className="text-black dark:text-white cursor-pointer"
                     onClick={() => handleNotificationStatusChange(item._id)}
                   >
-                    Mark as read
+                    Đánh dấu đã đọc
                   </p>
                 </div>
                 <p className="px-2 text-black dark:text-white">

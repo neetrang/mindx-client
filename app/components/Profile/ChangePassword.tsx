@@ -14,15 +14,15 @@ const ChangePassword: FC<Props> = (props) => {
   const passwordChangeHandler = async (e: any) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error("Mật khẩu mới không khớp");
     } else {
       await updatePassword({ oldPassword, newPassword });
     }
   };
- 
+
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Password changed successfully");
+      toast.success("Đổi mật khẩu thành công");
     }
     if (error) {
       if ("data" in error) {
@@ -35,7 +35,7 @@ const ChangePassword: FC<Props> = (props) => {
   return (
     <div className="w-full pl-7 px-2 800px:px-5 800px:pl-0">
       <h1 className="block text-[25px] 800px:text-[30px] font-Poppins text-center font-[500] text-black dark:text-[#fff] pb-2">
-        Change Password
+        Đổi Mật Khẩu
       </h1>
       <div className="w-full">
         <form
@@ -45,7 +45,7 @@ const ChangePassword: FC<Props> = (props) => {
         >
           <div className=" w-[100%] 800px:w-[60%] mt-5">
             <label className="block pb-2 text-black dark:text-[#fff]">
-              Enter your old password
+              Nhập mật khẩu cũ
             </label>
             <input
               type="password"
@@ -57,7 +57,7 @@ const ChangePassword: FC<Props> = (props) => {
           </div>
           <div className=" w-[100%] 800px:w-[60%] mt-2">
             <label className="block pb-2 text-black dark:text-[#fff]">
-              Enter your new password
+              Nhập mật khẩu mới
             </label>
             <input
               type="password"
@@ -69,7 +69,7 @@ const ChangePassword: FC<Props> = (props) => {
           </div>
           <div className=" w-[100%] 800px:w-[60%] mt-2">
             <label className="block pb-2 text-black dark:text-[#fff]">
-              Enter your confirm password
+              Xác nhận mật khẩu mới
             </label>
             <input
               type="password"
@@ -81,7 +81,7 @@ const ChangePassword: FC<Props> = (props) => {
             <input
               className={`w-[95%] h-[40px] border border-[#37a39a] text-center text-black dark:text-[#fff] rounded-[3px] mt-8 cursor-pointer`}
               required
-              value="Update"
+              value="Cập Nhật"
               type="submit"
             />
           </div>

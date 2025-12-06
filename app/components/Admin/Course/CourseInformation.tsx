@@ -74,30 +74,25 @@ const CourseInformation: FC<Props> = ({
     <div className="w-[80%] m-auto mt-24">
       <form onSubmit={handleSubmit} className={`${styles.label}`}>
         <div>
-          <label htmlFor="">Course Name</label>
+          <label htmlFor="">Tên khóa học</label>
           <input
-            type="name"
-            name=""
+            type="text"
             required
             value={courseInfo.name}
             onChange={(e: any) =>
               setCourseInfo({ ...courseInfo, name: e.target.value })
             }
-            id="name"
-            placeholder="MERN stack LMS platform with next 13"
-            className={`
-            ${styles.input}`}
+            placeholder="Nền tảng LMS MERN stack với Next 13"
+            className={`${styles.input}`}
           />
         </div>
         <br />
         <div className="mb-5">
-          <label className={`${styles.label}`}>Course Description</label>
+          <label className={`${styles.label}`}>Mô tả khóa học</label>
           <textarea
-            name=""
-            id=""
             cols={30}
             rows={8}
-            placeholder="Write something amazing..."
+            placeholder="Viết một mô tả hấp dẫn..."
             className={`${styles.input} !h-min !py-2`}
             value={courseInfo.description}
             onChange={(e: any) =>
@@ -108,66 +103,51 @@ const CourseInformation: FC<Props> = ({
         <br />
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
-            <label className={`${styles.label}`}>Course Price</label>
+            <label className={`${styles.label}`}>Giá khóa học</label>
             <input
               type="number"
-              name=""
               required
               value={courseInfo.price}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, price: e.target.value })
               }
-              id="price"
               placeholder="29"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
             <label className={`${styles.label} w-[50%]`}>
-              Estimated Price (optional)
+              Giá ước tính (tùy chọn)
             </label>
             <input
               type="number"
-              name=""
               value={courseInfo.estimatedPrice}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, estimatedPrice: e.target.value })
               }
-              id="price"
               placeholder="79"
-              className={`
-            ${styles.input}`}
+              className={`${styles.input}`}
             />
           </div>
         </div>
         <br />
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
-            <label className={`${styles.label}`} htmlFor="email">
-              Course Tags
-            </label>
+            <label className={`${styles.label}`}>Thẻ khóa học</label>
             <input
               type="text"
               required
-              name=""
               value={courseInfo.tags}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, tags: e.target.value })
               }
-              id="tags"
-              placeholder="MERN,Next 13,Socket io,tailwind css,LMS"
-              className={`
-            ${styles.input}`}
+              placeholder="MERN, Next 13, Socket.io, Tailwind CSS, LMS"
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
-            <label className={`${styles.label} w-[50%]`}>
-              Course Categories
-            </label>
+            <label className={`${styles.label} w-[50%]`}>Danh mục khóa học</label>
             <select
-              name=""
-              id=""
               className={`${styles.input}`}
               value={courseInfo.category}
               onChange={(e: any) =>
@@ -175,7 +155,7 @@ const CourseInformation: FC<Props> = ({
               }
             >
               <option className="dark:bg-[#000] text-[#fff]" value="">
-                Select Category
+                Chọn danh mục
               </option>
               {categories &&
                 categories.map((item: any) => (
@@ -193,35 +173,29 @@ const CourseInformation: FC<Props> = ({
         <br />
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
-            <label className={`${styles.label}`}>Course Level</label>
+            <label className={`${styles.label}`}>Cấp độ khóa học</label>
             <input
               type="text"
-              name=""
-              value={courseInfo.level}
               required
+              value={courseInfo.level}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, level: e.target.value })
               }
-              id="level"
-              placeholder="Beginner/Intermediate/Expert"
-              className={`
-            ${styles.input}`}
+              placeholder="Người mới/Bình thường/Chuyên gia"
+              className={`${styles.input}`}
             />
           </div>
           <div className="w-[50%]">
             <label className={`${styles.label} w-[50%]`}>Demo Url</label>
             <input
               type="text"
-              name=""
               required
               value={courseInfo.demoUrl}
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
               }
-              id="demoUrl"
-              placeholder="Enter Demo Url"
-              className={`
-            ${styles.input}`}
+              placeholder="Nhập URL demo"
+              className={`${styles.input}`}
             />
           </div>
         </div>
@@ -251,7 +225,7 @@ const CourseInformation: FC<Props> = ({
               />
             ) : (
               <span className="text-black dark:text-white">
-                Drag and drop your thumbnail here or click to browse
+                Kéo và thả hình đại diện hoặc nhấn để chọn
               </span>
             )}
           </label>
@@ -260,7 +234,7 @@ const CourseInformation: FC<Props> = ({
         <div className="w-full flex items-center justify-end">
           <input
             type="submit"
-            value="Next"
+            value="Tiếp"
             className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           />
         </div>

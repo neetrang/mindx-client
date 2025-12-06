@@ -17,13 +17,13 @@ const CreateCourse = (props: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Course created successfully");
+      toast.success("Khóa học đã được tạo thành công");
       redirect("/admin/courses");   
     }
     if (error) {
       if ("data" in error) {
         const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
+        toast.error(errorMessage.data.message); // giữ nguyên message server
       }
     }
   }, [isSuccess, error]);
@@ -59,9 +59,7 @@ const CreateCourse = (props: Props) => {
     },
   ]);
 
-
   const [courseData, setCourseData] = useState({});
-
 
   const handleSubmit = async () => {
     // Format benefits array

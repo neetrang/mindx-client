@@ -18,25 +18,24 @@ type VerifyNumber = {
 
 const Verification: FC<Props> = ({ setRoute }) => {
   const { token } = useSelector((state: any) => state.auth);
-  const [activation,{isSuccess, error}]=useActivationMutation();
+  const [activation, { isSuccess, error }] = useActivationMutation();
   const [invalidError, setInvalidError] = useState<boolean>(false);
-   useEffect(()=>{
-    if(isSuccess) {
-      toast.success("Account activated successfully");
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Kích hoạt tài khoản thành công");
       setRoute("Login");
-    };
-    if(error){
-      if("data" in error){
+    }
+    if (error) {
+      if ("data" in error) {
         const errorData = error as any;
         toast.error(errorData.data.message);
         setInvalidError(true);
-      }
-      else{
-        console.log('An error occured: ',error);
+      } else {
+        console.log("Đã xảy ra lỗi: ", error);
       }
     }
-   },[isSuccess,error])
-  
+  }, [isSuccess, error]);
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -78,7 +77,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
 
   return (
     <div>
-      <h1 className={`${styles.title}`}>Verify Your Account</h1>
+      <h1 className={`${styles.title}`}>Xác thực tài khoản của bạn</h1>
       <br />
       <div className="w-full flex items-center justify-center mt-2">
         <div className="w-[80px] h-[80px] rounded-full bg-[#497DF2] flex items-center justify-center">
@@ -109,17 +108,17 @@ const Verification: FC<Props> = ({ setRoute }) => {
       <br />
       <div className="w-full flex justify-center">
         <button className={`${styles.button}`} onClick={verificationHandler}>
-          Verify OTP
+          Xác thực OTP
         </button>
       </div>
       <br />
       <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
-        Go back to sign in?{" "}
+        Quay lại đăng nhập?{" "}
         <span
           className="text-[#2190ff] pl-1 cursor-pointer"
           onClick={() => setRoute("Login")}
         >
-          Sign in
+          Đăng nhập
         </span>
       </h5>
     </div>

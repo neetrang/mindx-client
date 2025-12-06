@@ -14,12 +14,12 @@ const CourseContentList: FC<Props> = (props) => {
     new Set<string>()
   );
 
-  // Find unique video sections
+  // Lấy danh sách section duy nhất
   const videoSections: string[] = [
     ...new Set<string>(props.data?.map((item: any) => item.videoSection)),
   ];
 
-  let totalCount: number = 0; // Total count of videos from previous sections
+  let totalCount: number = 0; // Tổng số video từ các section trước
 
   const toggleSection = (section: string) => {
     const newVisibleSections = new Set(visibleSections);
@@ -34,30 +34,28 @@ const CourseContentList: FC<Props> = (props) => {
   return (
     <div className={`mt-[15px] w-full ${!props.isDemo && 'ml-[-30px] min-h-screen sticky top-24 left-0 z-30'}`}>
       {videoSections.map((section: string, sectionIndex: number) => {
-
         const isSectionVisible = visibleSections.has(section);
 
-        // Filter videos by section
+        // Lọc video theo section
         const sectionVideos: any[] = props.data.filter(
           (item: any) => item.videoSection === section
         );
 
-        const sectionVideoCount: number = sectionVideos.length; // Number of videos in the current section
+        const sectionVideoCount: number = sectionVideos.length; // Số video trong section
         const sectionVideoLength: number = sectionVideos.reduce(
           (totalLength: number, item: any) => totalLength + item.videoLength,
           0
         );
-        const sectionStartIndex: number = totalCount; // Start index of videos within the current section
-        totalCount += sectionVideoCount; // Update the total count of videos
+        const sectionStartIndex: number = totalCount; // Chỉ số bắt đầu của video trong danh sách tổng
+        totalCount += sectionVideoCount; // Cập nhật tổng số video
 
         const sectionContentHours: number = sectionVideoLength / 60;
 
         return (
           <div className={`${!props.isDemo && 'border-b border-[#0000001c] dark:border-[#ffffff8e] pb-2'}`} key={section}>
             <div className="w-full flex">
-              {/* Render video section */}
-              <div className="w-full flex justify-between items-center"
-              >
+              {/* Render tiêu đề section */}
+              <div className="w-full flex justify-between items-center">
                 <h2 className="text-[22px] text-black dark:text-white">{section}</h2>
                 <button
                   className="mr-4 cursor-pointer text-black dark:text-white"
@@ -72,17 +70,17 @@ const CourseContentList: FC<Props> = (props) => {
               </div>
             </div>
             <h5 className="text-black dark:text-white">
-              {sectionVideoCount} Lessons ·{" "}
+              {sectionVideoCount} Bài học ·{" "}
               {sectionVideoLength < 60
                 ? sectionVideoLength
                 : sectionContentHours.toFixed(2)}{" "}
-              {sectionVideoLength > 60 ? "hours" : "minutes"}
+              {sectionVideoLength > 60 ? "giờ" : "phút"}
             </h5>
             <br />
             {isSectionVisible && (
               <div className="w-full">
                 {sectionVideos.map((item: any, index: number) => {
-                  const videoIndex: number = sectionStartIndex + index; // Calculate the video index within the overall list
+                  const videoIndex: number = sectionStartIndex + index; // Chỉ số video trong danh sách tổng
                   const contentLength: number = item.videoLength / 60;
                   return (
                     <div
@@ -106,7 +104,7 @@ const CourseContentList: FC<Props> = (props) => {
                       </div>
                       <h5 className="pl-8 text-black dark:text-white">
                         {item.videoLength > 60 ? contentLength.toFixed(2) : item.videoLength}{" "}
-                        {item.videoLength > 60 ? "hours" : "minutes"}
+                        {item.videoLength > 60 ? "giờ" : "phút"}
                       </h5>
                     </div>
                   );

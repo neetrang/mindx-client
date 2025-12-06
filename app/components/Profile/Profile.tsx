@@ -66,6 +66,7 @@ const Profile: FC<Props> = ({ user }) => {
           logOutHandler={logOutHandler}
         />
       </div>
+
       {active === 1 && (
         <div className="w-full h-full bg-transparent mt-[80px]">
           <ProfileInfo avatar={avatar} user={user} />
@@ -88,7 +89,7 @@ const Profile: FC<Props> = ({ user }) => {
           </div>
           {courses.length === 0 && (
             <h1 className="text-center text-[18px] font-Poppins dark:text-white text-black">
-              You don&apos;t have any purchased courses!
+              Bạn chưa mua khóa học nào!
             </h1>
           )}
         </div>

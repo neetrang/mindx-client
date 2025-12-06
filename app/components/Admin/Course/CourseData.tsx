@@ -1,6 +1,6 @@
 import { styles } from "@/app/styles/style";
 import React, { FC } from "react";
-import {AiOutlinePlusCircle} from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 
 type Props = {
@@ -25,7 +25,7 @@ const CourseData: FC<Props> = ({
     const updatedBenefits = [...benefits];
     updatedBenefits[index].title = value;
     setBenefits(updatedBenefits);
-  }; // we are adding the previous benefits then add the new one through the above function which is called in input component
+  };
 
   const handleAddBenefit = () => {
     setBenefits([...benefits, { title: "" }]);
@@ -49,16 +49,15 @@ const CourseData: FC<Props> = ({
     if (benefits[benefits.length - 1]?.title !== "" && prerequisites[prerequisites.length - 1]?.title !== "") {
       setActive(active + 1);
     } else{
-        toast.error("Please fill the fields for go to next!")
+        toast.error("Vui lòng điền đầy đủ các trường trước khi tiếp tục!");
     }
   };
-  
 
   return (
     <div className="w-[80%] m-auto mt-24 block">
       <div>
-        <label className={`${styles.label} text-[20px]`} htmlFor="email">
-          What are the benefits for students in this course?
+        <label className={`${styles.label} text-[20px]`} htmlFor="benefits">
+          Lợi ích mà học viên sẽ nhận được từ khóa học này?
         </label>
         <br />
         {benefits.map((benefit: any, index: number) => (
@@ -66,7 +65,7 @@ const CourseData: FC<Props> = ({
             type="text"
             key={index}
             name="Benefit"
-            placeholder="You will be able to build a full stack LMS Platform..."
+            placeholder="Bạn sẽ có thể xây dựng một nền tảng LMS toàn diện..."
             required
             className={`${styles.input} my-2`}
             value={benefit.title}
@@ -80,40 +79,40 @@ const CourseData: FC<Props> = ({
       </div>
 
       <div>
-        <label className={`${styles.label} text-[20px]`} htmlFor="email">
-        What are the prerequisites for starting this course?
+        <label className={`${styles.label} text-[20px]`} htmlFor="prerequisites">
+          Yêu cầu trước khi bắt đầu khóa học này?
         </label>
         <br />
-        {prerequisites.map((prerequisites: any, index: number) => (
+        {prerequisites.map((prerequisite: any, index: number) => (
           <input
             type="text"
             key={index}
             name="prerequisites"
-            placeholder="You need basic knowledge of MERN stack"
+            placeholder="Bạn cần có kiến thức cơ bản về MERN stack"
             required
             className={`${styles.input} my-2`}
-            value={prerequisites.title}
+            value={prerequisite.title}
             onChange={(e) => handlePrerequisitesChange(index, e.target.value)}
           />
         ))}
         <AiOutlinePlusCircle
           style={{ margin: "10px 0px", cursor: "pointer", width: "30px" }}
-
           onClick={handleAddPrerequisites}
         />
       </div>
+
       <div className="w-full flex items-center justify-between">
-      <div
+        <div
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           onClick={() => prevButton()}
         >
-          Prev
+          Trước
         </div>
         <div
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           onClick={() => handleOptions()}
         >
-          Next
+          Tiếp
         </div>
       </div>
     </div>

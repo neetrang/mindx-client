@@ -1,49 +1,51 @@
-import React, {FC} from 'react';
-import { IoMdCheckmark } from 'react-icons/io';
+import React, { FC } from "react";
+import { IoMdCheckmark } from "react-icons/io";
 
 type Props = {
-    active: number;
-    setActive: (active: number) => void;
-}
+  active: number;
+  setActive: (active: number) => void;
+};
 
 const CourseOptions: FC<Props> = ({ active, setActive }) => {
-    const options = [
-        "Course Information",
-        "Course Options",
-        "Course Content",
-        "Course Preview",
-      ];
-    return (
-     <div>
-      {options.map((option:any, index:number) => (
-        <div key={index} className={`w-full flex py-5`}>
-           <div
+  const options = [
+    "Course Information",
+    "Course Options",
+    "Course Content",
+    "Course Preview",
+  ];
+
+  return (
+    <div className="flex flex-col items-start">
+      {options.map((option, index) => (
+        <div key={index} className="flex items-center mb-6 relative">
+          <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              active + 1 > index ? "bg-blue-500" : "bg-[#384766]"
-            } relative`}
+              active >= index ? "bg-blue-500" : "bg-gray-500"
+            } text-white relative z-10`}
           >
-            <IoMdCheckmark className="text-[25px]" />
-            {index !== options.length - 1 && (
-              <div
-                className={`absolute h-[30px] w-1 ${
-                  active + 1 > index ? "bg-blue-500" : "bg-[#384766]"
-                } bottom-[-100%]`}
-              />
-            )}
+            {active > index ? <IoMdCheckmark className="text-[20px]" /> : index + 1}
           </div>
+
+          {/* Nối các bước */}
+          {index !== options.length - 1 && (
+            <div
+              className={`absolute left-[17px] top-[35px] w-[2px] h-[50px] ${
+                active > index ? "bg-blue-500" : "bg-gray-500"
+              }`}
+            ></div>
+          )}
+
           <h5
-          className={`pl-3 ${
-            active === index
-              ? "dark:text-white text-black"
-              : "dark:text-white text-black"
-          } text-[20px]`}
+            className={`ml-4 text-[18px] ${
+              active === index ? "font-bold text-blue-500" : "text-gray-700 dark:text-white"
+            }`}
           >
             {option}
           </h5>
-          </div>
+        </div>
       ))}
-     </div>
-    )
-}
+    </div>
+  );
+};
 
-export default CourseOptions
+export default CourseOptions;

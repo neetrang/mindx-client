@@ -13,8 +13,8 @@ const EditHero: FC<Props> = (props: Props) => {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
-  const { data,refetch } = useGetHeroDataQuery("Banner", {
-    refetchOnMountOrArgChange: true
+  const { data, refetch } = useGetHeroDataQuery("Banner", {
+    refetchOnMountOrArgChange: true,
   });
   const [editLayout, { isLoading, isSuccess, error }] = useEditLayoutMutation();
 
@@ -25,7 +25,7 @@ const EditHero: FC<Props> = (props: Props) => {
       setImage(data?.layout?.banner?.image?.url);
     }
     if (isSuccess) {
-      toast.success("Hero updated successfully!");
+      toast.success("Cập nhật Hero thành công!");
       refetch();
     }
     if (error) {
@@ -34,7 +34,7 @@ const EditHero: FC<Props> = (props: Props) => {
         toast.error(errorData?.data?.message);
       }
     }
-  }, [data, isSuccess, error]);
+  }, [data, isSuccess, error, refetch]);
 
   const handleUpdate = (e: any) => {
     const file = e.target.files?.[0];
@@ -66,12 +66,11 @@ const EditHero: FC<Props> = (props: Props) => {
           <div className="relative flex items-center justify-end">
             <img
               src={image}
-              alt=""
+              alt="Banner"
               className="object-contain 1100px:max-w-[90%] w-[90%] 1500px:max-w-[85%] h-[auto] z-[10]"
             />
             <input
               type="file"
-              name=""
               id="banner"
               accept="image/*"
               onChange={handleUpdate}
@@ -85,7 +84,7 @@ const EditHero: FC<Props> = (props: Props) => {
         <div className="1000px:w-[60%] flex flex-col items-center 1000px:mt-[0px] text-center 1000px:text-left mt-[150px]">
           <textarea
             className="dark:text-white resize-none text-[#000000c7] text-[30px] px-3 w-full 1000px:text-[60px] 1500px:text-[70px] font-[600] font-Josefin py-2 1000px:leading-[75px] 1500px:w-[60%] 1100px:w-[78%] outline-none bg-transparent block"
-            placeholder="Improve Your Online Learning Experience Better Instantly"
+            placeholder="Cải thiện trải nghiệm học trực tuyến của bạn ngay lập tức"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             rows={4}
@@ -94,7 +93,7 @@ const EditHero: FC<Props> = (props: Props) => {
           <textarea
             value={subTitle}
             onChange={(e) => setSubTitle(e.target.value)}
-            placeholder="We have 40k+ Online courses & 500K+ Online registered student. Find your desired Courses from them."
+            placeholder="Chúng tôi có hơn 40k khóa học trực tuyến & 500k+ học viên đăng ký. Tìm khóa học bạn muốn trong số đó."
             className="dark:text-[#edfff4] text-[#000000ac] font-Josefin font-[600] text-[18px] 1500px:!w-[55%] 1100px:!w-[74%] bg-transparent outline-none resize-none"
           ></textarea>
           <br />
@@ -120,7 +119,7 @@ const EditHero: FC<Props> = (props: Props) => {
                 : () => null
             }
           >
-            Save
+            Lưu
           </div>
         </div>
       </div>

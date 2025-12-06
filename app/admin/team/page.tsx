@@ -13,8 +13,8 @@ const page = (props: Props) => {
     <div>
       <AdminProtected>
         <Heading
-          title="Mylearning - Admin"
-          description="MyLearning is a platform for students to learn and get help from teachers"
+          title="MindX - Admin"
+          description="MindX là hệ thống quản lý học tập giúp lập trình viên nâng cao kỹ năng."
           keywords="Programming,MERN,Redux,Machine Learning"
         />
         <div className="flex h-screen">

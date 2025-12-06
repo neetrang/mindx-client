@@ -57,10 +57,10 @@ const Page = (props: Props) => {
           />
           <div className="w-[95%] 800px:w-[85%] m-auto min-h-[70vh]">
             <Heading
-              title={"All courses - Elearning"}
-              description={"Elearning is a programming community."}
+              title={"Tất cả khóa học - MindX"}
+              description={"MindX là cộng đồng lập trình."}
               keywords={
-                "programming community, coding skills, expert insights, collaboration, growth"
+                "cộng đồng lập trình, kỹ năng coding, kiến thức chuyên gia, hợp tác, phát triển"
               }
             />
             <br />
@@ -71,7 +71,7 @@ const Page = (props: Props) => {
                 } m-3 px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
                 onClick={() => setCategory("All")}
               >
-                All
+                Tất cả
               </div>
               {categories &&
                 categories.map((item: any, index: number) => (
@@ -89,13 +89,15 @@ const Page = (props: Props) => {
                   </div>
                 ))}
             </div>
-            {
-                courses && courses.length === 0 && (
-                    <p className={`${styles.label} justify-center min-h-[50vh] flex items-center`}>
-                    {search ? "No courses found!" : "No courses found in this category. Please try another one!"}
-                  </p>
-                )
-            }
+            {courses && courses.length === 0 && (
+              <p
+                className={`${styles.label} justify-center min-h-[50vh] flex items-center`}
+              >
+                {search
+                  ? "Không tìm thấy khóa học nào!"
+                  : "Không có khóa học nào trong danh mục này. Vui lòng thử danh mục khác!"}
+              </p>
+            )}
             <br />
             <br />
             <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 1500px:grid-cols-4 1500px:gap-[35px] mb-12 border-0">

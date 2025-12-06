@@ -31,9 +31,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const { data } = useSession();
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
   const [logout, setLogout] = useState(false);
-  const {} = useLogOutQuery(undefined, {
-    skip: !logout ? true : false,
-  });
+  const {} = useLogOutQuery(undefined, { skip: !logout ? true : false });
 
   useEffect(() => {
     if(!isLoading){
@@ -49,7 +47,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       }
       if(data === null){
         if(isSuccess){
-          toast.success("Login Successfully");
+          toast.success("Đăng nhập thành công");
         }
       }
       if(data === null && !isLoading && !userData){
@@ -70,9 +68,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {
-      {
-        setOpenSidebar(false);
-      }
+      setOpenSidebar(false);
     }
   };
 
@@ -93,17 +89,21 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
         <div className="w-[95%] 800px:w-[92%] m-auto py-2 h-full">
           <div className="w-full h-[80px] flex items-center justify-between p-3">
             <div>
-              <Link
-                href={"/"}
-                className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
-              >
-                MyLearning
-              </Link>
+              <Link href="/" className="flex items-center">
+              <Image
+                src="/assets/logo.svg"
+                alt="Logo MindX"
+                width={120}
+                height={50}
+                className="object-contain"
+                priority
+              />
+            </Link>
             </div>
             <div className="flex items-center">
               <NavItems activeItem={activeItem} isMobile={false} />
               <ThemeSwitcher />
-              {/* only for mobile */}
+              {/* chỉ dành cho mobile */}
               <div className="800px:hidden">
                 <HiOutlineMenuAlt3
                   size={25}
@@ -115,7 +115,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 <Link href={"/profile"}>
                   <Image
                     src={userData?.user.avatar ? userData.user.avatar.url : avatar}
-                    alt=""
+                    alt="Avatar người dùng"
                     width={30}
                     height={30}
                     className="w-[30px] h-[30px] rounded-full cursor-pointer"
@@ -133,7 +133,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           </div>
         </div>
 
-        {/* mobile sidebar */}
+        {/* thanh sidebar mobile */}
         {openSidebar && (
           <div
             className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024]"
@@ -146,7 +146,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                 <Link href={"/profile"}>
                   <Image
                     src={userData?.user.avatar ? userData.user.avatar.url : avatar}
-                    alt=""
+                    alt="Avatar người dùng"
                     width={30}
                     height={30}
                     className="w-[30px] h-[30px] rounded-full ml-[20px] cursor-pointer"
@@ -163,53 +163,41 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               <br />
               <br />
               <p className="text-[16px] px-2 pl-5 text-black dark:text-white">
-                Copyright © 2025 MyLearning
+                Bản quyền © 2025 MindX
               </p>
             </div>
           </div>
         )}
       </div>
-      {route === "Login" && (
-        <>
-          {open && (
-            <CustomModal
-              open={open}
-              setOpen={setOpen}
-              setRoute={setRoute}
-              activeItem={activeItem}
-              component={Login}
-              refetch={refetch}
-            />
-          )}
-        </>
+      {route === "Login" && open && (
+        <CustomModal
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={Login}
+          refetch={refetch}
+        />
       )}
 
-      {route === "Sign-Up" && (
-        <>
-          {open && (
-            <CustomModal
-              open={open}
-              setOpen={setOpen}
-              setRoute={setRoute}
-              activeItem={activeItem}
-              component={SignUp}
-            />
-          )}
-        </>
+      {route === "Sign-Up" && open && (
+        <CustomModal
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={SignUp}
+        />
       )}
 
-      {route === "Verification" && (
-        <>
-          {open && (
-            <CustomModal
-              open={open}
-              setOpen={setOpen}
-              setRoute={setRoute}
-              activeItem={activeItem}
-              component={Verification}
-            />
-          )}
-        </>
+      {route === "Verification" && open && (
+        <CustomModal
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={Verification}
+        />
       )}
     </div>
     )

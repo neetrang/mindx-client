@@ -13,8 +13,8 @@ const page = ({params}:any) => {
   return (
     <div>
         <Heading
-         title="Mylearning - Admin"
-         description="MyLearning is a platform for students to learn and get help from teachers"
+         title="MindX - Admin"
+         description="MindX là hệ thống quản lý học tập giúp lập trình viên nâng cao kỹ năng."
          keywords="Prograaming,MERN,Redux,Machine Learning"
         />
         <div className="flex">

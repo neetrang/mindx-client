@@ -24,7 +24,7 @@ const CourseCard: FC<Props> = ({ item, isProfile }) => {
           height={300}
           style={{ objectFit: "contain" }}
           className="rounded w-full"
-          alt={item.name || "Course thumbnail"}
+          alt={item.name || "Hình ảnh khóa học"}
         />
         <br />
         <h1 className="font-Poppins text-[16px] text-black dark:text-[#fff]">
@@ -37,13 +37,13 @@ const CourseCard: FC<Props> = ({ item, isProfile }) => {
               isProfile && "hidden 800px:inline"
             }`}
           >
-            {item.purchased} Students
+            {item.purchased} Học viên
           </h5>
         </div>
         <div className="w-full flex items-center justify-between pt-3">
           <div className="flex">
             <h3 className="text-black dark:text-[#fff]">
-              {item.price === 0 ? "Free" : item.price + "$"}
+              {item.price === 0 ? "Miễn phí" : item.price + "$"}
             </h3>
             <h5 className="pl-3 text-[14px] mt-[-5px] line-through opacity-80 text-black dark:text-[#fff]">
               {item.estimatedPrice}$ 
@@ -52,7 +52,7 @@ const CourseCard: FC<Props> = ({ item, isProfile }) => {
           <div className="flex items-center pb-3">
             <AiOutlineUnorderedList size={20} fill="#fff" />
             <h5 className="pl-2 text-black dark:text-[#fff]">
-              {item.courseData?.length || 0} Lectures
+              {item.courseData?.length || 0} Bài học
             </h5>
           </div>
         </div>
