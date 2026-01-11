@@ -17,13 +17,13 @@ const CreateCourse = (props: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Khóa học đã được tạo thành công");
+      toast.success("Course created successfully");
       redirect("/admin/courses");   
     }
     if (error) {
       if ("data" in error) {
         const errorMessage = error as any;
-        toast.error(errorMessage.data.message); // giữ nguyên message server
+        toast.error(errorMessage.data.message);
       }
     }
   }, [isSuccess, error]);
@@ -32,8 +32,8 @@ const CreateCourse = (props: Props) => {
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
-    price: "",
-    estimatedPrice: "",
+    price: 0,
+    estimatedPrice: 0,
     tags: "",
     level: "",
     categories:"", 
@@ -59,7 +59,9 @@ const CreateCourse = (props: Props) => {
     },
   ]);
 
+
   const [courseData, setCourseData] = useState({});
+
 
   const handleSubmit = async () => {
     // Format benefits array

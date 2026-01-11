@@ -1,36 +1,42 @@
 import React from "react";
 import { styles } from "../styles/style";
 
-type Props = {};
-
-const Policy = (props: Props) => {
+const Policy = () => {
   return (
-    <div>
-      <div className={"w-[95%] 800px:w-[92%] m-auto py-2 text-black dark:text-white px-3"}>
-        <h1 className={`${styles.title} !text-start pt-2`}>
-          Điều Khoản và Chính Sách của Nền Tảng
-        </h1>
-        <ul style={{ listStyle: "unset", marginLeft: "15px" }}>
-          <p className="py-2 ml-[-15px] text-[16px] font-Poppins leading-8 whitespace-pre-line">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Đây là phần mô tả về các điều khoản, quyền lợi và trách nhiệm khi sử dụng nền tảng. Người dùng cần đọc kỹ và tuân thủ các quy định này.
-          </p>
+    <div className="text-black dark:text-white">
+      <br />
+      <h1 className={`${styles.title} 800px:!text-[45px]`}>
+        Chính sách - <span className="text-gradient">MindX</span>
+      </h1>
+
+      <br />
+      <div className="w-[95%] 800px:w-[85%] m-auto">
+        <p className="text-[18px] font-Roboto">
+          MindX là cộng đồng học lập trình dành cho mọi đối tượng, giúp các lập trình viên mới và những người muốn nâng cao kỹ năng tiếp cận các kiến thức và công cụ thực tế. 
           <br />
-          <p className="py-2 ml-[-15px] text-[16px] font-Poppins leading-8 whitespace-pre-line">
-            Người dùng đồng ý cung cấp thông tin chính xác khi đăng ký và sử dụng dịch vụ. Mọi hành vi gian lận, vi phạm luật pháp sẽ bị xử lý theo quy định.
-          </p>
           <br />
-          <p className="py-2 ml-[-15px] text-[16px] font-Poppins leading-8 whitespace-pre-line">
-            Nội dung trên nền tảng thuộc quyền sở hữu trí tuệ của MindX. Người dùng không được sao chép, phân phối hoặc sử dụng cho mục đích thương mại mà chưa được phép.
-          </p>
+          Chúng tôi cung cấp các khóa học chất lượng với chi phí hợp lý, đảm bảo mọi người đều có cơ hội học tập và phát triển, bất kể kinh nghiệm hay trình độ hiện tại.
           <br />
-          <p className="py-2 ml-[-15px] text-[16px] font-Poppins leading-8 whitespace-pre-line">
-            MindX không chịu trách nhiệm cho các mất mát hoặc thiệt hại phát sinh từ việc sử dụng dịch vụ. Người dùng cần đảm bảo an toàn thông tin cá nhân và dữ liệu của mình.
-          </p>
           <br />
-          <p className="py-2 ml-[-15px] text-[16px] font-Poppins leading-8 whitespace-pre-line">
-            MindX có quyền thay đổi, cập nhật các điều khoản và chính sách bất cứ lúc nào. Người dùng sẽ được thông báo qua email hoặc thông báo trên nền tảng.
-          </p>
-        </ul>
+          Tại MindX, chúng tôi tin vào việc học tập chủ động và hỗ trợ lẫn nhau. Cộng đồng của chúng tôi gồm những người cùng chí hướng, sẵn sàng trao đổi, giải đáp thắc mắc và chia sẻ kinh nghiệm.
+          <br />
+          <br />
+          Các khóa học kết hợp giữa lý thuyết và thực hành, giúp bạn xây dựng kỹ năng lập trình vững chắc, đồng thời phát triển tư duy giải quyết vấn đề và khả năng làm việc nhóm.
+          <br />
+          <br />
+          MindX không chỉ tập trung vào kiến thức mà còn tạo môi trường học tập tích cực, giúp học viên tự tin ứng dụng kiến thức vào các dự án thực tế.
+          <br />
+          <br />
+          Hãy tham gia cộng đồng MindX để phát triển kỹ năng, kết nối với những người cùng đam mê và đạt được mục tiêu nghề nghiệp của bạn.
+        </p>
+        <br />
+        <span className="text-[22px]">MaiTrang&apos;s</span>
+        <h5 className="text-[18px] font-Roboto">
+          Người sáng lập kiêm CEO của MindX
+        </h5>
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   );

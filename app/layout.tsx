@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Poppins, Josefin_Sans } from "next/font/google";
+import { Roboto, Montserrat } from "next/font/google";
 import { ClientLayout } from "./client-layout";
 
 export const metadata = {
@@ -9,23 +9,23 @@ export const metadata = {
   },
 };
 
-const poppins = Poppins({
+const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-Poppins",
+  weight: ["400", "500", "700"],
+  variable: "--font-Roboto",
 });
 
-const josefin = Josefin_Sans({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-Josefin",
+  weight: ["400", "500","700"],
+  variable: "--font-Montserrat",
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.variable} ${josefin.variable} !bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
+        className={`${roboto.variable} ${montserrat.variable} !bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}
       >
         <ClientLayout>{children}</ClientLayout>
       </body>

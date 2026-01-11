@@ -7,14 +7,13 @@ const Page = () => {
     const params = useParams(); 
     
     if (!params?.id) {
-        return <div>Loading...</div>; // Handle undefined params
+        return <div>Loading...</div>; // Xử lý các tham số không xác định
     }
 
-    const id = Array.isArray(params.id) ? params.id[0] : params.id; // ✅ Ensure id is always a string
-
+    const id = Array.isArray(params.id) ? params.id[0] : params.id; //  Đảm bảo rằng id luôn là một chuỗi
     return (
         <div>
-            <CourseDetailsPage id={id} /> {/* ✅ Now id is always a string */}
+            <CourseDetailsPage id={id} /> 
         </div>
     );
 };

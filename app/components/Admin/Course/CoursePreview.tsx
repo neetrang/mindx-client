@@ -3,6 +3,8 @@ import CoursePlayer from "../../../utils/CoursePlayer";
 import { styles } from "../../../../app/styles/style";
 import Ratings from "../../../../app/utils/Ratings";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { formatPrice } from "@/app/utils/formatPrice";
+
 
 type Props = {
   active: number;
@@ -35,7 +37,7 @@ const CoursePreview: FC<Props> = ({
   };
 
   return (
-    <div className="w-[90%] m-auto py-5 mb-5">
+    <div className="w-[90%] m-auto py-5 mb-5 text-gray-900 dark:text-white">
       <div className="w-full relative">
         <div className="w-full mt-10">
           <CoursePlayer
@@ -43,13 +45,19 @@ const CoursePreview: FC<Props> = ({
             title={courseData?.title}
           />
         </div>
+
         <div className="flex items-center">
           <h1 className="pt-5 text-[25px]">
-            {courseData?.price === 0 ? "Miễn phí" : courseData?.price + "$"}
+            {courseData?.price === 0 ? "Miễn phí" : formatPrice(courseData?.price)}
           </h1>
+
+
           <h5 className="pl-3 text-[20px] mt-2 line-through opacity-80">
-            {courseData?.estimatedPrice}$
+            {courseData?.estimatedPrice
+              ? formatPrice(courseData?.estimatedPrice)
+              : ""}
           </h5>
+
 
           <h4 className="pl-5 pt-4 text-[22px]">
             Giảm {discountPercentengePrice}%
@@ -57,37 +65,39 @@ const CoursePreview: FC<Props> = ({
         </div>
 
         <div className="flex items-center">
-          <div
-            className={`${styles.button} !w-[180px] my-3 font-Poppins !bg-[crimson] cursor-not-allowed`}
-          >
-            Mua ngay {courseData?.price}$
-          </div>
-        </div>
+  <div
+    className={`${styles.button} !w-[180px] my-3 font-Roboto !bg-[crimson] cursor-not-allowed dark:text-white`}
+  >
+    Mua ngay {formatPrice(courseData?.price)}
+  </div>
 
-        <div className="flex items-center">
-          <input
-            type="text"
-            name=""
-            id=""
-            placeholder="Mã giảm giá..."
-            className={`${styles.input} 1500px:!w-[50%] 1100px:w-[60%] ml-3 !mt-0`}
-          />
-          <div
-            className={`${styles.button} !w-[120px] my-3 ml-4 font-Poppins cursor-pointer`}
-          >
-            Áp dụng
-          </div>
-        </div>
+  <div className="flex items-center ml-4">
+    <input
+      type="text"
+      placeholder="Mã giảm giá..."
+      className={`${styles.input} 1500px:!w-[50%] 1100px:w-[60%] !mt-0 dark:bg-slate-700 dark:text-white`}
+    />
+    <div
+      className={`${styles.button} !w-[120px] my-3 ml-4 font-Roboto cursor-pointer dark:text-white`}
+    >
+      Áp dụng
+    </div>
+  </div>
+</div>
+
+
         <p className="pb-1">• Bao gồm mã nguồn</p>
         <p className="pb-1">• Truy cập trọn đời</p>
         <p className="pb-1">• Chứng chỉ hoàn thành khóa học</p>
         <p className="pb-3 800px:pb-1">• Hỗ trợ cao cấp</p>
       </div>
+
       <div className="w-full">
         <div className="w-full 800px:pr-5">
-          <h1 className="text-[25px] font-Poppins font-[600]">
+          <h1 className="text-[25px] font-Roboto font-[600]">
             {courseData?.name}
           </h1>
+
           <div className="flex items-center justify-between pt-3">
             <div className="flex items-center">
               <Ratings rating={0} />
@@ -95,11 +105,13 @@ const CoursePreview: FC<Props> = ({
             </div>
             <h5>0 Học viên</h5>
           </div>
+
           <br />
-          <h1 className="text-[25px] font-Poppins font-[600]">
+          <h1 className="text-[25px] font-Roboto font-[600]">
             Bạn sẽ học được gì từ khóa học này?
           </h1>
         </div>
+
         {courseData?.benefits?.map((item: any, index: number) => (
           <div className="w-full flex 800px:items-center py-2" key={index}>
             <div className="w-[15px] mr-1">
@@ -108,11 +120,14 @@ const CoursePreview: FC<Props> = ({
             <p className="pl-2">{item.title}</p>
           </div>
         ))}
+
         <br />
         <br />
-        <h1 className="text-[25px] font-Poppins font-[600]">
+
+        <h1 className="text-[25px] font-Roboto font-[600]">
           Những yêu cầu cần thiết để bắt đầu khóa học?
         </h1>
+
         {courseData?.prerequisites?.map((item: any, index: number) => (
           <div className="w-full flex 800px:items-center py-2" key={index}>
             <div className="w-[15px] mr-1">
@@ -121,20 +136,23 @@ const CoursePreview: FC<Props> = ({
             <p className="pl-2">{item.title}</p>
           </div>
         ))}
+
         <br />
         <br />
-        {/* course description */}
+
         <div className="w-full">
-          <h1 className="text-[25px] font-Poppins font-[600]">
+          <h1 className="text-[25px] font-Roboto font-[600]">
             Chi tiết khóa học
           </h1>
-          <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden">
+          <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden dark:text-gray-200">
             {courseData?.description}
           </p>
         </div>
+
         <br />
         <br />
       </div>
+
       <div className="w-full flex items-center justify-between">
         <div
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
@@ -146,7 +164,7 @@ const CoursePreview: FC<Props> = ({
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           onClick={() => createCourse()}
         >
-         {isEdit ? 'Cập nhật' : 'Tạo khóa học'}
+          {isEdit ? "Cập nhật" : "Tạo khóa học"}
         </div>
       </div>
     </div>

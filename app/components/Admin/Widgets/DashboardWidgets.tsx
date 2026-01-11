@@ -103,10 +103,10 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
             <div className="flex items-center p-5 justify-between">
               <div className="">
                 <BiBorderLeft className="dark:text-[#45CBA0] text-[#000] text-[30px]" />
-                <h5 className="pt-2 font-Poppins dark:text-[#fff] text-black text-[20px]">
+                <h5 className="pt-2 font-Roboto dark:text-[#fff] text-black text-[20px]">
                   {ordersComparePercentage?.currentMonth}
                 </h5>
-                <h5 className="py-2 font-Poppins dark:text-[#45CBA0] text-black text-[20px] font-[400]">
+                <h5 className="py-2 font-Roboto dark:text-[#45CBA0] text-black text-[20px] font-[400]">
                   Doanh Thu
                 </h5>
               </div>
@@ -131,10 +131,10 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
             <div className="flex items-center p-5 justify-between">
               <div className="">
                 <PiUsersFourLight className="dark:text-[#45CBA0] text-[#000] text-[30px]" />
-                <h5 className="pt-2 font-Poppins dark:text-[#fff] text-black text-[20px]">
+                <h5 className="pt-2 font-Roboto dark:text-[#fff] text-black text-[20px]">
                   {userComparePercentage?.currentMonth}
                 </h5>
-                <h5 className="py-2 font-Poppins dark:text-[#45CBA0] text-black text-[20px] font-[400]">
+                <h5 className="py-2 font-Roboto dark:text-[#45CBA0] text-black text-[20px] font-[400]">
                   Người Dùng Mới
                 </h5>
               </div>
@@ -160,7 +160,7 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
           <OrdersAnalytics isDashboard={true} />
         </div>
         <div className="p-5">
-          <h5 className="dark:text-[#fff] text-black text-[20px] font-[400] font-Poppins pb-3">
+          <h5 className="dark:text-[#fff] text-black text-[20px] font-[400] font-Roboto pb-3">
             Giao Dịch Mới
           </h5>
           <AllInvoices isDashboard={true} />

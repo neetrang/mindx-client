@@ -65,7 +65,7 @@ const FAQ = (props: Props) => {
 
                   {open && (
                     <dd className="mt-3 pr-4">
-                      <p className="text-base font-Poppins text-gray-700 dark:text-white">
+                      <p className="text-base font-Roboto text-gray-700 dark:text-white">
                         {q.answerVi || q.answer} {/* Hiển thị câu trả lời tiếng Việt nếu có */}
                       </p>
                     </dd>

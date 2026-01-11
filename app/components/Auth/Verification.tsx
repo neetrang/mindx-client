@@ -92,7 +92,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
             type="number"
             key={key}
             ref={inputRefs[index]}
-            className={`w-[65px] h-[65px] bg-transparent border-[3px] rounded-[10px] flex items-center text-black dark:text-white justify-center text-[18px] font-Poppins outline-none text-center ${
+            className={`w-[65px] h-[65px] bg-transparent border-[3px] rounded-[10px] flex items-center text-black dark:text-white justify-center text-[18px] font-Roboto outline-none text-center ${
               invalidError
                 ? "shake border-red-500"
                 : "dark:border-white border-[#0000004a]"
@@ -112,7 +112,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
         </button>
       </div>
       <br />
-      <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
+      <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
         Quay lại đăng nhập?{" "}
         <span
           className="text-[#2190ff] pl-1 cursor-pointer"

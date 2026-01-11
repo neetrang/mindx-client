@@ -88,7 +88,7 @@ const Profile: FC<Props> = ({ user }) => {
               ))}
           </div>
           {courses.length === 0 && (
-            <h1 className="text-center text-[18px] font-Poppins dark:text-white text-black">
+            <h1 className="text-center text-[18px] font-Roboto dark:text-white text-black">
               Bạn chưa mua khóa học nào!
             </h1>
           )}

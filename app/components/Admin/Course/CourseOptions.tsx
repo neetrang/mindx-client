@@ -2,16 +2,16 @@ import React, { FC } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 
 type Props = {
-  active: number;
-  setActive: (active: number) => void;
+  active: number; // Bước hiện tại đang active
+  setActive: (active: number) => void; // Hàm để thay đổi bước active
 };
 
 const CourseOptions: FC<Props> = ({ active, setActive }) => {
   const options = [
-    "Course Information",
-    "Course Options",
-    "Course Content",
-    "Course Preview",
+    "Thông tin khóa học",   // Course Information
+    "Tùy chọn khóa học",    // Course Options
+    "Nội dung khóa học",    // Course Content
+    "Xem trước khóa học",   // Course Preview
   ];
 
   return (

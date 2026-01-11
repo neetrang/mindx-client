@@ -5,6 +5,7 @@ import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
+import "@/app/utils/timeago-vi";
 import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
@@ -114,7 +115,7 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
           email: item.email,
           role: item.role,
           courses: item.courses.length,
-          created_at: format(item.createdAt),
+          created_at: format(item.createdAt, "vi"),
         });
       });
   } else {
@@ -126,7 +127,7 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
           email: item.email,
           role: item.role,
           courses: item.courses.length,
-          created_at: format(item.createdAt),
+          created_at: format(item.createdAt, "vi"),
         });
       });
   }
@@ -152,7 +153,7 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
                 className={`${styles.button} !w-[200px] !rounded-[10px] dark:bg-[#57c7a3] !h-[35px] dark:border dark:border-[#ffffff6c]`}
                 onClick={() => setActive(!active)}
               >
-                Thêm Thành Viên Mới
+                Thêm Admin
               </div>
             </div>
           )}

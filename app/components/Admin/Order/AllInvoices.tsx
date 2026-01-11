@@ -5,59 +5,65 @@ import { useTheme } from "next-themes";
 import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
+import "@/app/utils/timeago-vi";
 import { useGetAllOrdersQuery } from "@/redux/features/orders/ordersApi";
 import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
 import { AiOutlineMail } from "react-icons/ai";
+import { formatPrice } from "@/app/utils/formatPrice";
+
 
 type Props = {
   isDashboard?: boolean;
 };
 
 const AllInvoices = ({ isDashboard }: Props) => {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const { isLoading, data } = useGetAllOrdersQuery({});
   const { data: usersData } = useGetAllUsersQuery({});
   const { data: coursesData } = useGetAllCoursesQuery({});
-
   const [orderData, setOrderData] = useState<any>([]);
 
-  useEffect(() => {
-    if (data) {
-      const temp = data.orders.map((item: any) => {
-        const user = usersData?.users.find(
-          (user: any) => user._id === item.userId
-        );
-        const course = coursesData?.courses.find(
-          (course: any) => course._id === item.courseId
-        );
-        return {
-          ...item,
-          userName: user?.name,
-          userEmail: user?.email,
-          title: course?.name,
-          price: "$" + course?.price,
-        };
-      });
-      setOrderData(temp);
-    }
-  }, [data, usersData, coursesData]);
+ useEffect(() => {
+  if (data) {
+    const temp = data.orders.map((item: any) => {
+      const user = usersData?.users.find(
+        (u: any) => u._id === item.userId
+      );
+      const course = coursesData?.courses.find(
+        (c: any) => c._id === item.courseId
+      );
+
+      return {
+        ...item,
+        userName: user?.name,
+        userEmail: user?.email,
+        title: course?.name,
+        price: formatPrice(Number(course?.price)),
+      };
+    });
+    setOrderData(temp);
+  }
+}, [data, usersData, coursesData]);
 
   const columns: any = [
-    { field: "id", headerName: "ID", flex: 0.3 },
-    { field: "userName", headerName: "Name", flex: isDashboard ? 0.6 : 0.5 },
+    { field: "id", headerName: "Mã đơn", flex: 0.4 },
+    { field: "userName", headerName: "Tên người dùng", flex: 0.7 },
+
     ...(isDashboard
       ? []
       : [
           { field: "userEmail", headerName: "Email", flex: 1 },
-          { field: "title", headerName: "Course Title", flex: 1 },
+          { field: "title", headerName: "Tên khóa học", flex: 1 },
         ]),
-    { field: "price", headerName: "Price", flex: 0.5 },
+
+    { field: "price", headerName: "Giá", flex: 0.5 },
+
     ...(isDashboard
-      ? [{ field: "created_at", headerName: "Created At", flex: 0.5 }]
+      ? [{ field: "created_at", headerName: "Ngày tạo", flex: 0.5 }]
       : [
           {
             field: " ",
-            headerName: "Email",
+            headerName: "Gửi email",
             flex: 0.2,
             renderCell: (params: any) => {
               return (
@@ -83,7 +89,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
         userEmail: item.userEmail,
         title: item.title,
         price: item.price,
-        created_at: format(item.createdAt),
+        created_at: format(item.createdAt, "vi"),
       });
     });
 
@@ -102,10 +108,10 @@ const AllInvoices = ({ isDashboard }: Props) => {
                 border: "none",
                 outline: "none",
               },
-              "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+              "& .MuiDataGrid-toolbarContainer": {
                 color: theme === "dark" ? "#fff" : "#000",
               },
-              "& .MuiDataGrid-sortIcon": {
+              "& .MuiSvgIcon-root": {
                 color: theme === "dark" ? "#fff" : "#000",
               },
               "& .MuiDataGrid-row": {
@@ -118,12 +124,6 @@ const AllInvoices = ({ isDashboard }: Props) => {
               "& .MuiTablePagination-root": {
                 color: theme === "dark" ? "#fff" : "#000",
               },
-              "& .MuiDataGrid-cell": {
-                borderBottom: "none!important",
-              },
-              "& .name-column--cell": {
-                color: theme === "dark" ? "#fff" : "#000",
-              },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: theme === "dark" ? "#3e4396" : "#A4A9FC",
                 borderBottom: "none",
@@ -133,23 +133,31 @@ const AllInvoices = ({ isDashboard }: Props) => {
                 backgroundColor: theme === "dark" ? "#1F2A40" : "#F2F0F0",
               },
               "& .MuiDataGrid-footerContainer": {
-                color: theme === "dark" ? "#fff" : "#000",
-                borderTop: "none",
                 backgroundColor: theme === "dark" ? "#3e4396" : "#A4A9FC",
+                borderTop: "none",
+                color: theme === "dark" ? "#fff" : "#000",
               },
               "& .MuiCheckbox-root": {
                 color:
-                  theme === "dark" ? `#b7ebde !important` : `#000 !important`,
-              },
-              "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `#fff !important`,
+                  theme === "dark"
+                    ? `#b7ebde !important`
+                    : `#000 !important`,
               },
             }}
           >
             <DataGrid
-              checkboxSelection={isDashboard ? false : true}
+              checkboxSelection={!isDashboard}
               rows={rows}
               columns={columns}
+              slots={{
+                toolbar: GridToolbar,
+              }}
+              slotProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  quickFilterProps: { debounceMs: 500 },
+                },
+              }}
             />
           </Box>
         </Box>

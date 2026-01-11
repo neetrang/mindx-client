@@ -82,7 +82,7 @@ const CourseInformation: FC<Props> = ({
             onChange={(e: any) =>
               setCourseInfo({ ...courseInfo, name: e.target.value })
             }
-            placeholder="Nền tảng LMS MERN stack với Next 13"
+            placeholder="Ví dụ: Nền tảng LMS MERN stack với Next 13"
             className={`${styles.input}`}
           />
         </div>
@@ -105,29 +105,34 @@ const CourseInformation: FC<Props> = ({
           <div className="w-[45%]">
             <label className={`${styles.label}`}>Giá khóa học</label>
             <input
-              type="number"
-              required
-              value={courseInfo.price}
-              onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, price: e.target.value })
-              }
-              placeholder="29"
-              className={`${styles.input}`}
-            />
+          type="number"
+          required
+          value={courseInfo.price}
+          onChange={(e: any) =>
+            setCourseInfo({ ...courseInfo, price: Number(e.target.value) })
+          }
+          placeholder="Ví dụ: 1.000.000"
+          className={`${styles.input}`}
+        />
+
           </div>
           <div className="w-[50%]">
             <label className={`${styles.label} w-[50%]`}>
               Giá ước tính (tùy chọn)
             </label>
             <input
-              type="number"
-              value={courseInfo.estimatedPrice}
-              onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, estimatedPrice: e.target.value })
-              }
-              placeholder="79"
-              className={`${styles.input}`}
-            />
+            type="number"
+            value={courseInfo.estimatedPrice}
+            onChange={(e: any) =>
+              setCourseInfo({
+                ...courseInfo,
+                estimatedPrice: Number(e.target.value),
+              })
+            }
+            placeholder="Ví dụ: 7.900.000"
+            className={`${styles.input}`}
+          />
+
           </div>
         </div>
         <br />
@@ -141,7 +146,7 @@ const CourseInformation: FC<Props> = ({
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, tags: e.target.value })
               }
-              placeholder="MERN, Next 13, Socket.io, Tailwind CSS, LMS"
+              placeholder="Ví dụ: MERN, Next 13, Socket.io, Tailwind CSS, LMS"
               className={`${styles.input}`}
             />
           </div>
@@ -181,7 +186,7 @@ const CourseInformation: FC<Props> = ({
               onChange={(e: any) =>
                 setCourseInfo({ ...courseInfo, level: e.target.value })
               }
-              placeholder="Người mới/Bình thường/Chuyên gia"
+              placeholder="Cơ bản/Nâng cao/Chuyên gia"
               className={`${styles.input}`}
             />
           </div>

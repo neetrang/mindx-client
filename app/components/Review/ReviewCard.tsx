@@ -42,9 +42,7 @@ const ReviewCard = (props: Props) => {
         </div>
       </div>
       <p
-        className="pt-2 px-2 font-Poppins
-      text-black dark:text-white
-      "
+        className="pt-2 px-2 font-Roboto text-black dark:text-white"
       >
         {props.item.comment}
       </p>

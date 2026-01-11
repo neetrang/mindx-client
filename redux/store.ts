@@ -13,7 +13,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
-// call the load user function on every page load
+// Gọi hàm tải người dùng mỗi khi tải trang
 const initializeApp = async () => {
   await store.dispatch(
     apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })

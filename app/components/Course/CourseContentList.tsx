@@ -52,7 +52,7 @@ const CourseContentList: FC<Props> = (props) => {
         const sectionContentHours: number = sectionVideoLength / 60;
 
         return (
-          <div className={`${!props.isDemo && 'border-b border-[#0000001c] dark:border-[#ffffff8e] pb-2'}`} key={section}>
+          <div className={`${!props.isDemo && 'border-b border-[#ece2e21c] dark:border-[#ffffff8e] pb-2'}`} key={section}>
             <div className="w-full flex">
               {/* Render tiêu đề section */}
               <div className="w-full flex justify-between items-center">
@@ -85,19 +85,16 @@ const CourseContentList: FC<Props> = (props) => {
                   return (
                     <div
                       className={`w-full ${
-                        videoIndex === props.activeVideo ? "bg-slate-800" : ""
+                        videoIndex === props.activeVideo ? "bg-slate-100 dark:bg-slate-800" : ""
                       } cursor-pointer transition-all p-2`}
                       key={item._id}
                       onClick={() => props.isDemo ? null : props?.setActiveVideo(videoIndex)}
                     >
                       <div className="flex items-start">
-                        <div>
-                          <MdOutlineOndemandVideo
-                            size={25}
-                            className="mr-2"
-                            color="#1cdada"
-                          />
-                        </div>
+                        <MdOutlineOndemandVideo
+                          size={25}
+                          className="mr-2 text-blue-500 dark:text-blue-400"
+                        />
                         <h1 className="text-[18px] inline-block break-words text-black dark:text-white">
                           {item.title}
                         </h1>

@@ -37,7 +37,7 @@ const SideBarProfile: FC<Props> = ({
           height={20}
           className="w-[20px] h-[20px] 800px:w-[30px] 800px:h-[30px] cursor-pointer rounded-full"
         />
-        <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
+        <h5 className="pl-2 800px:block hidden font-Roboto dark:text-white text-black">
           Tài khoản của tôi
         </h5>
       </div>
@@ -49,7 +49,7 @@ const SideBarProfile: FC<Props> = ({
         onClick={() => setActive(2)}
       >
         <RiLockPasswordLine size={20} className="dark:text-white text-black" />
-        <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
+        <h5 className="pl-2 800px:block hidden font-Roboto dark:text-white text-black">
           Đổi mật khẩu
         </h5>
       </div>
@@ -61,7 +61,7 @@ const SideBarProfile: FC<Props> = ({
         onClick={() => setActive(3)}
       >
         <SiCoursera size={20} className="dark:text-white text-black" />
-        <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
+        <h5 className="pl-2 800px:block hidden font-Roboto dark:text-white text-black">
           Khóa học đã đăng ký
         </h5>
       </div>
@@ -74,7 +74,7 @@ const SideBarProfile: FC<Props> = ({
           href={"/admin"}
         >
           <MdOutlineAdminPanelSettings size={20} className="dark:text-white text-black" />
-          <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
+          <h5 className="pl-2 800px:block hidden font-Roboto dark:text-white text-black">
             Bảng điều khiển Admin
           </h5>
         </Link>
@@ -87,7 +87,7 @@ const SideBarProfile: FC<Props> = ({
         onClick={() => logOutHandler()}
       >
         <AiOutlineLogout size={20} className="dark:text-white text-black" />
-        <h5 className="pl-2 800px:block hidden font-Poppins dark:text-white text-black">
+        <h5 className="pl-2 800px:block hidden font-Roboto dark:text-white text-black">
           Đăng xuất
         </h5>
       </div>

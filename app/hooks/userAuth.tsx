@@ -4,7 +4,7 @@ export default function UserAuth() {
   const { user } = useSelector((state: any) => state.auth);
   
   if (user) {
-    return true;   // user is authenticated
+    return true;   // người dùng đã xác thực
   } else {
     return false;
   }

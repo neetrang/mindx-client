@@ -107,3 +107,20 @@ body {
 .shake {
   animation: shake 0.5s ease-in-out;
 }
+
+/* global.css */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes pastelFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-pastelFade {
+  animation: pastelFade 1s ease-out forwards;
+}

@@ -1,26 +1,39 @@
-'use client'
-import { styles } from "@/app/styles/style";
+'use client';
+
 import CoursePlayer from "@/app/utils/CoursePlayer";
 import Ratings from "@/app/utils/Ratings";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import CourseContentList from "../Course/CourseContentList";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
-import { VscVerifiedFilled } from "react-icons/vsc";
+import { FaUserGraduate } from "react-icons/fa";
+import { formatPrice } from "@/app/utils/formatPrice";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "../Payment/CheckOutForm";
+
 
 type Props = {
   data: any;
+  clientSecret: string;
+  stripePromise: any;
   setRoute: any;
-  setOpen: any;
+  setOpen: any; // modal login
 };
 
-const CourseDetails = ({ data, setRoute, setOpen: openAuthModal }: Props) => {
+const CourseDetails = ({
+  data,
+  clientSecret,
+  stripePromise,
+  setRoute,
+  setOpen: openAuthModal,
+}: Props) => {
   const { data: userData, refetch } = useLoadUserQuery(undefined, {});
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<any>(null);
+  const [open, setOpen] = useState(false); // modal thanh toán
 
   useEffect(() => {
     setUser(userData?.user);
@@ -31,7 +44,7 @@ const CourseDetails = ({ data, setRoute, setOpen: openAuthModal }: Props) => {
   const discountPercentagePrice = discountPercentage.toFixed(0);
 
   const isPurchased =
-    user && user?.courses?.find((item: any) => item._id === data._id);
+    user && user?.courses?.some((item: any) => item._id === data._id);
 
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
@@ -41,210 +54,151 @@ const CourseDetails = ({ data, setRoute, setOpen: openAuthModal }: Props) => {
       openAuthModal(true);
       return;
     }
-  
-    try {
-      const orderData = { courseId: data._id };
-      const response = await createOrder(orderData).unwrap();
-      if (response?.success) {
-        toast(response.message || "Đặt mua thành công!");
-        refetch();
-      } else {
-        toast("Đặt mua thất bại: " + (response?.message || "Có lỗi xảy ra"));
-      }
-    } catch (err: any) {
-      console.error("❌ Lỗi đặt mua:", err);
-      toast("Lỗi xử lý đơn hàng: " + (err?.data?.message || "Lỗi không xác định"));
-    }
+
+    setOpen(true); // mở modal thanh toán
   };
 
+  const sectionTitleClass =
+    "text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-white";
+
   return (
-    <div>
-      <div className="w-[90%] 800px:w-[90%] m-auto py-5">
-        <div className="w-full flex flex-col-reverse 800px:flex-row">
-          <div className="w-full 800px:w-[65%] 800px:pr-5">
-            <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
-              {data.name}
-            </h1>
-            <div className="flex items-center justify-between pt-3">
-              <div className="flex items-center">
-                <Ratings rating={data.ratings} />
-                <h5 className="text-black dark:text-white">
-                  {data.reviews?.length} đánh giá
-                </h5>
-              </div>
-              <h5 className="text-black dark:text-white">
-                {data.purchased} học viên
-              </h5>
-            </div>
+    <div className="flex flex-col-reverse md:flex-row gap-10 px-6 md:px-32 pt-20 relative">
+      {/* LEFT */}
+      <div className="flex-1 space-y-6">
+        <h1 className="text-2xl md:text-4xl font-bold">{data.name}</h1>
 
-            <br />
-            <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
-              Bạn sẽ học được gì từ khóa học này?
-            </h1>
-            <div>
-              {data.benefits?.map((item: any, index: number) => (
-                <div className="w-full flex 800px:items-center py-2" key={index}>
-                  <div className="w-[15px] mr-1">
-                    <IoCheckmarkDoneOutline size={20} className="text-black dark:text-white" />
-                  </div>
-                  <p className="pl-2 text-black dark:text-white">{item.title}</p>
-                </div>
-              ))}
-              <br />
-            </div>
+        <div className="flex flex-wrap items-center gap-5 mt-2">
+          <Ratings rating={data.ratings} />
+          <span className="opacity-80">{data.reviews?.length} đánh giá</span>
+          <FaUserGraduate className="text-blue-500" size={16} />
+          <span>{data.purchased} học viên</span>
+        </div>
 
-            <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
-              Yêu cầu cần có trước khi bắt đầu khóa học
-            </h1>
-            {data.prerequisites?.map((item: any, index: number) => (
-              <div className="w-full flex 800px:items-center py-2" key={index}>
-                <div className="w-[15px] mr-1">
-                  <IoCheckmarkDoneOutline
-                    size={20}
-                    className="text-black dark:text-white"
-                  />
-                </div>
-                <p className="pl-2 text-black dark:text-white">{item.title}</p>
-              </div>
+        <div className="bg-gray-50 p-5 rounded-lg">
+          <h2 className={sectionTitleClass}>Bạn sẽ học được gì?</h2>
+          <ul className="list-disc ml-5 space-y-1">
+            {data.benefits?.map((item: any, idx: number) => (
+              <li key={idx} className="flex items-center gap-2">
+                <IoCheckmarkDoneOutline className="text-blue-500" />
+                {item.title}
+              </li>
             ))}
-            <br />
+          </ul>
+        </div>
 
-            <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
-              Tổng quan khóa học
-            </h1>
-            <CourseContentList data={data?.courseData} isDemo={true} />
-            <br />
+        <div className="bg-gray-50 p-5 rounded-lg">
+          <h2 className={sectionTitleClass}>Yêu cầu trước khi học</h2>
+          <ul className="list-disc ml-5 space-y-1">
+            {data.prerequisites?.map((item: any, idx: number) => (
+              <li key={idx} className="flex items-center gap-2">
+                <IoCheckmarkDoneOutline className="text-blue-500" />
+                {item.title}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            <h1 className="text-[25px] font-Poppins font-[600] text-black dark:text-white">
-              Chi tiết khóa học
-            </h1>
-            <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden text-black dark:text-white">
-              {data.description}
-            </p>
-            <br />
+        <div className="bg-gray-50 p-5 rounded-lg">
+          <h2 className={sectionTitleClass}>Tổng quan khóa học</h2>
+          <CourseContentList data={data.courseData} isDemo />
+        </div>
 
-            <div className="800px:flex items-center">
-              <Ratings rating={data?.ratings} />
-              <div className="mb-2 800px:mb-[unset]" />
-              <h5 className="text-[25px] font-Poppins text-black dark:text-white">
-                {Number.isInteger(data?.ratings)
-                  ? data?.ratings.toFixed(1)
-                  : data?.ratings.toFixed(2)}{" "}
-                Đánh giá khóa học • {data?.reviews?.length} đánh giá
-              </h5>
-            </div>
-            <br />
+        <div className="bg-gray-50 p-5 rounded-lg">
+          <h2 className={sectionTitleClass}>Chi tiết khóa học</h2>
+          <p className="whitespace-pre-line">{data.description}</p>
+        </div>
 
-            {(data?.reviews && [...data.reviews].reverse()).map(
-              (item: any, index: number) => (
-                <div className="w-full pb-4" key={index}>
-                  <div className="flex">
-                    <div className="w-[50px] h-[50px]">
-                      <Image
-                        src={
-                          item.user.avatar
-                            ? item.user.avatar.url
-                            : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
-                        }
-                        width={50}
-                        height={50}
-                        alt=""
-                        className="w-[50px] h-[50px] rounded-full object-cover"
-                      />
-                    </div>
-                    <div className="hidden 800px:block pl-2">
-                      <div className="flex items-center">
-                        <h5 className="text-[18px] pr-2 text-black dark:text-white">
-                          {item.user.name}
-                        </h5>
-                        <Ratings rating={item.rating} />
-                      </div>
-                      <p className="text-black dark:text-white">{item.comment}</p>
-                      <small className="text-[#000000d1] dark:text-[#ffffff83]">
-                        {item.createdAt} •
-                      </small>
-                    </div>
-                    <div className="pl-2 flex 800px:hidden items-center">
-                      <h5 className="text-[18px] pr-2 text-black dark:text-white">
-                        {item.user.name}
-                      </h5>
-                      <Ratings rating={item.rating} />
-                    </div>
-                  </div>
-                  {item.commentReplies.map((i: any, index: number) => (
-                    <div className="w-full flex 800px:ml-16 my-5" key={index}>
-                      <div className="w-[50px] h-[50px]">
-                        <Image
-                          src={
-                            i.user.avatar
-                              ? i.user.avatar.url
-                              : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
-                          }
-                          width={50}
-                          height={50}
-                          alt=""
-                          className="w-[50px] h-[50px] rounded-full object-cover"
-                        />
-                      </div>
-                      <div className="pl-2">
-                        <div className="flex items-center">
-                          <h5 className="text-[20px]">{i.user.name}</h5>{" "}
-                          <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
-                        </div>
-                        <p>{i.comment}</p>
-                        <small className="text-[#ffffff83]">{i.createdAt} •</small>
-                      </div>
-                    </div>
-                  ))}
+        <div className="bg-gray-50 p-5 rounded-lg space-y-4">
+          <h2 className="text-xl font-semibold">Student Reviews</h2>
+          {data.reviews?.map((item: any, idx: number) => (
+            <div key={idx} className="flex gap-3 p-3 border rounded">
+              <Image
+                src={
+                  item.user.avatar?.url ||
+                  "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+                }
+                alt=""
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <span className="font-medium">{item.user.name}</span>
+                  <Ratings rating={item.rating} />
                 </div>
-              )
-            )}
-          </div>
-
-          {/* Phần mua khóa học */}
-          <div className="w-full 800px:w-[35%] relative">
-            <div className="sticky top-[100px] left-0 z-50 w-full">
-              <CoursePlayer videoUrl={data?.demoUrl} title={data?.title} />
-              <div className="flex items-center">
-                <h1 className="pt-5 text-[25px] text-black dark:text-white">
-                  {data.price === 0 ? "Miễn phí" : `Giá khóa học: ${data.price}$`}
-                </h1>
-                <h5 className="pl-3 text-[20px] mt-2 line-through opacity-80 text-black dark:text-white">
-                  {data.estimatedPrice}$  // Giá gốc
-                </h5>
-                <h4 className="pl-5 pt-4 text-[22px] text-black dark:text-white">
-                  Giảm {discountPercentagePrice}%
-                </h4>
+                <p className="text-sm opacity-80">{item.comment}</p>
               </div>
-
-              {/* Nút mua khóa học */}
-              <div className="flex items-center">
-                {isPurchased ? (
-                  <Link
-                    className={`${styles.button} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimson]`}
-                    href={`/course-access/${data._id}`}
-                  >
-                    Vào khóa học
-                  </Link>
-                ) : (
-                  <div
-                    className={`${styles.button} !w-[180px] my-3 font-Poppins cursor-pointer !bg-[crimson]`}
-                    onClick={handleOrder}
-                  >
-                    {isLoading ? "Đang xử lý..." : `Mua ngay ${data.price}$`}
-                  </div>
-                )}
-              </div>
-
-              <br />
-              <p className="pb-1 text-black dark:text-white">• Bao gồm mã nguồn</p>
-              <p className="pb-1 text-black dark:text-white">• Truy cập trọn đời</p>
-              <p className="pb-1 text-black dark:text-white">• Chứng chỉ hoàn thành</p>
-              <p className="pb-3 800px:pb-1 text-black dark:text-white">• Hỗ trợ cao cấp</p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
+
+      {/* RIGHT */}
+      <div className="w-full md:w-[400px]">
+        <CoursePlayer videoUrl={data.demoUrl} title={data.title} />
+
+        <div className="bg-white border rounded-lg p-5 mt-4 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-semibold">
+              {data.price === 0
+                ? "Miễn phí"
+                : formatPrice(Number(data.price))}
+            </span>
+
+            {data.estimatedPrice > data.price && (
+              <span className="line-through text-gray-400">
+                {formatPrice(Number(data.estimatedPrice))}
+              </span>
+            )}
+
+            <span className="text-blue-500">
+              Giảm {discountPercentagePrice}%
+            </span>
+          </div>
+
+          {isPurchased ? (
+            <Link
+              href={`/course-access/${data._id}`}
+              className="block text-center py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Vào khóa học
+            </Link>
+          ) : (
+            <button
+              onClick={handleOrder}
+              disabled={isLoading}
+              className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              {isLoading ? "Đang xử lý..." : "Mua ngay"}
+            </button>
+          )}
+
+          <ul className="text-sm space-y-1 opacity-80">
+            <li>• Bao gồm mã nguồn</li>
+            <li>• Truy cập trọn đời</li>
+            <li>• Chứng chỉ hoàn thành</li>
+            <li>• Hỗ trợ cao cấp</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* MODAL STRIPE */}
+      {open && stripePromise && clientSecret && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="w-[500px] bg-white rounded-xl shadow p-4 relative">
+            <IoCloseOutline
+              size={32}
+              className="absolute top-3 right-3 cursor-pointer"
+              onClick={() => setOpen(false)}
+            />
+
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckOutForm setOpen={setOpen} data={data} user={user} />
+            </Elements>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

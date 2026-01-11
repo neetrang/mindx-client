@@ -112,7 +112,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
         </div>
 
         <br />
-        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
+        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
           Hoặc đăng nhập bằng
         </h5>
         <div className="flex items-center justify-center my-3">
@@ -123,12 +123,12 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           />
           <AiFillGithub
             size={30}
-            className="cursor-pointer ml-2"
+           className="cursor-pointer ml-2 text-black dark:text-white"
             onClick={() => signIn("github")}
           />
         </div>
 
-        <h5 className="text-center pt-4 font-Poppins text-[14px]">
+        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
           Chưa có tài khoản?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"

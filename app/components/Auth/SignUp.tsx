@@ -85,7 +85,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
           value={values.email}
           onChange={handleChange}
           id="email"
-          placeholder="emailcủabạn@gmail.com"
+          placeholder="emailmindx@gmail.com"
           className={`${errors.email && touched.email && "border-red-500"} ${styles.input}`}
         />
         {errors.email && touched.email && (
@@ -102,7 +102,7 @@ const Signup: FC<Props> = ({ setRoute }) => {
             value={values.password}
             onChange={handleChange}
             id="password"
-            placeholder="mật khẩu!@%"
+            placeholder="matkhau!@%"
             className={`${errors.password && touched.password && "border-red-500"} ${styles.input}`}
           />
           {!show ? (
@@ -128,15 +128,15 @@ const Signup: FC<Props> = ({ setRoute }) => {
         </div>
 
         <br />
-        <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">
+        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
           Hoặc đăng ký bằng
         </h5>
         <div className="flex items-center justify-center my-3">
           <FcGoogle size={30} className="cursor-pointer mr-2" />
-          <AiFillGithub size={30} className="cursor-pointer ml-2" />
+          <AiFillGithub size={30} className="cursor-pointer ml-2 text-black dark:text-white" />
         </div>
 
-        <h5 className="text-center pt-4 font-Poppins text-[14px]">
+        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
           Đã có tài khoản?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"

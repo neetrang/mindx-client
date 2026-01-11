@@ -8,6 +8,8 @@ import React, { FC, useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
+import "@/app/utils/timeago-vi";
+
 
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
@@ -27,7 +29,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
   const [audio] = useState<any>(
     typeof window !== "undefined" &&
       new Audio(
-        "https://res.cloudinary.com/sujalverma/video/upload/v1741010116/mixkit-sci-fi-click-900_as8zyk.wav"
+        "https://res.cloudinary.com/dm16ncix5/video/upload/v1767979914/nhac_chuong_thong_bao_messenger-www_tiengdong_com_b2adus.mp3"
       )
   );
 
@@ -72,13 +74,13 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
       </div>
       {open && (
         <div className="w-[350px] h-[60vh] overflow-y-scroll py-3 px-2 border border-[#ffffff0c] dark:bg-[#111C43] bg-white shadow-xl absolute top-16 z-[1000000000] rounded">
-          <h5 className="text-center text-[20px] font-Poppins text-black dark:text-white p-3">
+          <h5 className="text-center text-[20px] font-Roboto text-black dark:text-white p-3">
             Thông Báo
           </h5>
           {notifications &&
             notifications.map((item: any, index: number) => (
               <div
-                className="dark:bg-[#2d3a4e] bg-[#00000013] font-Poppins border-b dark:border-b-[#ffffff47] border-b-[#0000000f]"
+                className="dark:bg-[#2d3a4e] bg-[#00000013] font-Roboto border-b dark:border-b-[#ffffff47] border-b-[#0000000f]"
                 key={index}
               >
                 <div className="w-full flex items-center justify-between p-2">
@@ -94,7 +96,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
                   {item.message}
                 </p>
                 <p className="p-2 text-black dark:text-white text-[14px]">
-                  {format(item.createdAt)}
+                  {format(item.createdAt, "vi")}
                 </p>
               </div>
             ))}

@@ -2,7 +2,7 @@
 import { FC, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
-import "react-pro-sidebar/dist/css/styles.css";
+import "react-pro-sidebar/dist/scss/styles.scss";
 import {
   HomeOutlinedIcon,
   ArrowForwardIosIcon,
@@ -41,7 +41,7 @@ const Item: FC<itemProps> = ({ title, to, icon, selected, setSelected }) => {
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography className="!text-[16px] !font-Poppins">{title}</Typography>
+      <Typography className="!text-[16px] !font-Roboto">{title}</Typography>
       <Link href={to} />
     </MenuItem>
   );
@@ -120,7 +120,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                <Link href="/" className="block">
-               <h3 className="text-[25px] font-Poppins  dark:text-white text-black">
+               <h3 className="text-[25px] font-Roboto  dark:text-white text-black">
                   MindX
                 </h3>
                </Link>
@@ -167,22 +167,23 @@ const Sidebar = () => {
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
-              title="Dashboard"
+              title="Bảng điều khiển"
               to="/admin"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
+
             <Typography
               variant="h5"
               sx={{ m: "15px 0 5px 25px" }}
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
             >
-              {!isCollapsed && "Data"}
+              {!isCollapsed && "Dữ liệu"}
             </Typography>
             <Item
-              title="Users"
+              title="Người Dùng"
               to="/admin/users"
               icon={<GroupsIcon />}
               selected={selected}
@@ -190,7 +191,7 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Invoices"
+              title="Hóa Đơn"
               to="/admin/invoices"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
@@ -202,17 +203,17 @@ const Sidebar = () => {
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Content"}
+              {!isCollapsed && "Khóa Học"}
             </Typography>
             <Item
-              title="Create Course"
+              title="Tạo Khóa học"
               to="/admin/create-course"
               icon={<VideoCallIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Live Courses"
+              title="Danh sách"
               to="/admin/courses"
               icon={<OndemandVideoIcon />}
               selected={selected}
@@ -224,10 +225,10 @@ const Sidebar = () => {
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Customization"}
+              {!isCollapsed && "Tùy chỉnh"}
             </Typography>
             <Item
-              title="Hero"
+              title="Trang chủ"
               to="/admin/hero"
               icon={<WebIcon />}
               selected={selected}
@@ -241,7 +242,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Categories"
+              title="Danh mục"
               to="/admin/categories"
               icon={<WysiwygIcon />}
               selected={selected}
@@ -253,10 +254,10 @@ const Sidebar = () => {
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Controllers"}
+              {!isCollapsed && "Quản lý"}
             </Typography>
             <Item
-              title="Manage Team"
+              title="Team Admin"
               to="/admin/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
@@ -268,17 +269,17 @@ const Sidebar = () => {
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Analytics"}
+              {!isCollapsed && "Phân tích"}
             </Typography>
             <Item
-              title="Courses Analytics"
+              title="Khóa học"
               to="/admin/courses-analytics"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Orders Analytics"
+              title="Đơn hàng"
               to="/admin/orders-analytics"
               icon={<MapOutlinedIcon />}
               selected={selected}
@@ -286,7 +287,7 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Users Analytics"
+              title="Người dùng"
               to="/admin/users-analytics"
               icon={<ManageHistoryIcon />}
               selected={selected}
@@ -302,7 +303,7 @@ const Sidebar = () => {
             </Typography>
             <div onClick={logoutHandler}>
               <Item
-                title="Logout"
+                title="Về Home"
                 to="/"
                 icon={<ExitToAppIcon />}
                 selected={selected}

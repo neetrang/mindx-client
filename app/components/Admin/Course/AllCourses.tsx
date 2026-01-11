@@ -10,6 +10,7 @@ import {
 } from "@/redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
+import "@/app/utils/timeago-vi";
 import { styles } from "@/app/styles/style";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -75,7 +76,7 @@ const AllCourses = (props: Props) => {
         title: item.name,
         ratings: item.ratings,
         purchased: item.purchased,
-        created_at: format(item.createdAt),
+        created_at: format(item.createdAt, "vi"),
       });
     });
 

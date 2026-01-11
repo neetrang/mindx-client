@@ -11,7 +11,7 @@ const About = () => {
 
       <br />
       <div className="w-[95%] 800px:w-[85%] m-auto">
-        <p className="text-[18px] font-Poppins">
+        <p className="text-[18px] font-Roboto">
           Bạn đã sẵn sàng nâng cao kỹ năng lập trình của mình lên một tầm cao mới chưa? Hãy đến với MindX, cộng đồng lập trình hàng đầu được thiết kế để giúp những lập trình viên mới đạt được mục tiêu và phát huy tối đa tiềm năng của mình.
           <br />
           <br />
@@ -31,7 +31,7 @@ const About = () => {
         </p>
         <br />
         <span className="text-[22px]">MaiTrang&apos;s</span>
-        <h5 className="text-[18px] font-Poppins">
+        <h5 className="text-[18px] font-Roboto">
           Người sáng lập kiêm CEO của MindX
         </h5>
         <br />
