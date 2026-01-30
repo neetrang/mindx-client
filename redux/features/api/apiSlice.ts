@@ -1,41 +1,48 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userLoggedIn } from "../auth/authSlice";
+import { userLoggedIn, userLoggedOut } from "../auth/authSlice";
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: process.env.NEXT_PUBLIC_SERVER_URI,
+  credentials: "include",
+});
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_SERVER_URI,
-  }),
+  baseQuery,
   endpoints: (builder) => ({
-    refreshToken: builder.query({
-      query: (data) => ({
+
+    // 1. refresh token
+    refreshToken: builder.mutation({
+      query: () => ({
         url: "refresh",
         method: "GET",
-        credentials: "include" as const,
       }),
     }),
+
+    // 2. load user
     loadUser: builder.query({
-      query: (data) => ({
+      query: () => ({
         url: "me",
         method: "GET",
-        credentials: "include" as const,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const result = await queryFulfilled;
+          const { data } = await queryFulfilled;
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
+              accessToken: data.accessToken,
+              user: data.user,
             })
           );
-        } catch (error: any) {
-          console.log(error);
+        } catch {
+          dispatch(userLoggedOut());
         }
       },
     }),
   }),
 });
 
-
-export const { useRefreshTokenQuery, useLoadUserQuery } = apiSlice;
+export const {
+  useRefreshTokenMutation,
+  useLoadUserQuery,
+} = apiSlice;

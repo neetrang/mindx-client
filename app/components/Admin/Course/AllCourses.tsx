@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useTheme } from "next-themes";
@@ -27,43 +27,60 @@ const AllCourses = (props: Props) => {
   );
   const [deleteCourse, { isSuccess, error }] = useDeleteCourseMutation({});
 
-  const columns = [
+  const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "title", headerName: "Tên khóa học", flex: 1 },
     { field: "ratings", headerName: "Đánh giá", flex: 0.5 },
     { field: "purchased", headerName: "Số lượt mua", flex: 0.5 },
     { field: "created_at", headerName: "Ngày tạo", flex: 0.5 },
     {
-      field: "  ",
+      field: "edit",
       headerName: "Sửa",
       flex: 0.2,
-      renderCell: (params: any) => {
-        return (
+      sortable: false,
+      filterable: false,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: any) => (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100%"
+          height="100%"
+        >
           <Link href={`/admin/edit-course/${params.row.id}`}>
             <FiEdit2 className="dark:text-white text-black" size={20} />
           </Link>
-        );
-      },
+        </Box>
+      ),
     },
     {
-      field: " ",
+      field: "delete",
       headerName: "Xóa",
       flex: 0.2,
-      renderCell: (params: any) => {
-        return (
-          <Button
+      sortable: false,
+      filterable: false,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: any) => (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100%"
+          height="100%"
+        >
+          <AiOutlineDelete
+            className="dark:text-white text-black cursor-pointer"
+            size={20}
             onClick={() => {
-              setOpen(!open);
+              setOpen(true);
               setCourseId(params.row.id);
             }}
-          >
-            <AiOutlineDelete
-              className="dark:text-white text-black"
-              size={20}
-            />
-          </Button>
-        );
-      },
+          />
+        </Box>
+      ),
     },
   ];
 
@@ -145,7 +162,12 @@ const AllCourses = (props: Props) => {
               },
             }}
           >
-            <DataGrid checkboxSelection rows={rows} columns={columns} />
+            <DataGrid
+              checkboxSelection
+              rows={rows}
+              columns={columns as GridColDef[]}
+            />
+
           </Box>
 
           {open && (

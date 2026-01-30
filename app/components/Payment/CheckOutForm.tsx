@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
 import {
   useElements,
   useStripe,
   PaymentElement,
   LinkAuthenticationElement,
-} from '@stripe/react-stripe-js';
-import React, { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { io, Socket } from 'socket.io-client';
-import { useRouter } from 'next/navigation';
+} from "@stripe/react-stripe-js";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { io, Socket } from "socket.io-client";
+import { useRouter } from "next/navigation";
 
-import { useLoadUserQuery } from '@/redux/features/api/apiSlice';
-import { useCreateOrderMutation } from '@/redux/features/orders/ordersApi';
-import { styles } from '@/app/styles/style';
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
+import { styles } from "@/app/styles/style";
 
 type Props = {
-  setOpen: any;
+  setOpen: (open: boolean) => void;
   data: any;
   user: any;
 };
@@ -28,25 +28,22 @@ const CheckoutForm = ({ setOpen, data, user }: Props) => {
 
   const socketRef = useRef<Socket | null>(null);
 
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loadUser, setLoadUser] = useState(false);
+
+  // ✅ LẤY refetch để update redux.user sau khi mua
+  const { refetch } = useLoadUserQuery({});
 
   const [createOrder, { data: orderData, error }] =
     useCreateOrderMutation();
 
-  useLoadUserQuery(undefined, {
-    skip: !loadUser,
-  });
-
-  // ✅ Init socket SAFELY
+  // ✅ Init socket (an toàn)
   useEffect(() => {
     const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI;
-
     if (!ENDPOINT) return;
 
     socketRef.current = io(ENDPOINT, {
-      transports: ['websocket'],
+      transports: ["websocket"],
       withCredentials: true,
     });
 
@@ -65,17 +62,16 @@ const CheckoutForm = ({ setOpen, data, user }: Props) => {
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      redirect: 'if_required',
+      redirect: "if_required",
     });
 
     if (error) {
-      setMessage(error.message || 'Payment failed');
+      setMessage(error.message || "Thanh toán thất bại");
       setIsLoading(false);
       return;
     }
 
-    if (paymentIntent?.status === 'succeeded') {
-      setIsLoading(false);
+    if (paymentIntent?.status === "succeeded") {
       createOrder({
         courseId: data._id,
         payment_info: paymentIntent,
@@ -83,25 +79,30 @@ const CheckoutForm = ({ setOpen, data, user }: Props) => {
     }
   };
 
-  // ✅ Emit notification ONLY after order success
+  // ✅ SAU KHI ORDER THÀNH CÔNG
   useEffect(() => {
     if (orderData) {
-      setLoadUser(true);
+      (async () => {
+        await refetch();     // 🔥 update redux.user
+        setOpen(false);      // 🔥 đóng modal thanh toán
 
-      socketRef.current?.emit('notification', {
-        title: 'New Order',
-        message: `You have a new order from ${data.course.name}`,
-        userId: user._id,
-      });
+        socketRef.current?.emit("notification", {
+          title: "New Order",
+          message: "Bạn có đơn hàng mới",
+          userId: user._id,
+        });
 
-      router.push(`/course-access/${data._id}`);
+        toast.success("Thanh toán thành công 🎉");
+        // ❌ KHÔNG redirect ở đây → để user tự bấm “Vào khóa học”
+      })();
     }
 
-    if (error && 'data' in error) {
+    if (error && "data" in error) {
       const err: any = error;
-      toast.error(err.data?.message || 'Order failed');
+      toast.error(err.data?.message || "Đặt hàng thất bại");
+      setIsLoading(false);
     }
-  }, [orderData, error, data._id, router, user._id]);
+  }, [orderData, error, refetch, setOpen, user._id]);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
@@ -110,12 +111,12 @@ const CheckoutForm = ({ setOpen, data, user }: Props) => {
 
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span className={`${styles.button} mt-2 !h-[35px]`}>
-          {isLoading ? 'Paying...' : 'Pay now'}
+          {isLoading ? "Đang thanh toán..." : "Thanh toán"}
         </span>
       </button>
 
       {message && (
-        <div className="text-[red] font-Poppins pt-2">
+        <div className="text-red-500 text-sm pt-2">
           {message}
         </div>
       )}

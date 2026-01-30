@@ -37,138 +37,130 @@ const CoursePreview: FC<Props> = ({
   };
 
   return (
-    <div className="w-[90%] m-auto py-5 mb-5 text-gray-900 dark:text-white">
-      <div className="w-full relative">
-        <div className="w-full mt-10">
-          <CoursePlayer
-            videoUrl={courseData?.demoUrl}
-            title={courseData?.title}
-          />
-        </div>
-
-        <div className="flex items-center">
-          <h1 className="pt-5 text-[25px]">
-            {courseData?.price === 0 ? "Miễn phí" : formatPrice(courseData?.price)}
-          </h1>
-
-
-          <h5 className="pl-3 text-[20px] mt-2 line-through opacity-80">
-            {courseData?.estimatedPrice
-              ? formatPrice(courseData?.estimatedPrice)
-              : ""}
-          </h5>
-
-
-          <h4 className="pl-5 pt-4 text-[22px]">
-            Giảm {discountPercentengePrice}%
-          </h4>
-        </div>
-
-        <div className="flex items-center">
-  <div
-    className={`${styles.button} !w-[180px] my-3 font-Roboto !bg-[crimson] cursor-not-allowed dark:text-white`}
-  >
-    Mua ngay {formatPrice(courseData?.price)}
-  </div>
-
-  <div className="flex items-center ml-4">
-    <input
-      type="text"
-      placeholder="Mã giảm giá..."
-      className={`${styles.input} 1500px:!w-[50%] 1100px:w-[60%] !mt-0 dark:bg-slate-700 dark:text-white`}
-    />
-    <div
-      className={`${styles.button} !w-[120px] my-3 ml-4 font-Roboto cursor-pointer dark:text-white`}
-    >
-      Áp dụng
+  <div className="w-[90%] m-auto py-8 mb-10 text-gray-900 dark:text-white">
+    {/* VIDEO */}
+    <div className="w-full">
+      <CoursePlayer
+        videoUrl={courseData?.demoUrl}
+        title={courseData?.title}
+      />
     </div>
-  </div>
-</div>
 
-
-        <p className="pb-1">• Bao gồm mã nguồn</p>
-        <p className="pb-1">• Truy cập trọn đời</p>
-        <p className="pb-1">• Chứng chỉ hoàn thành khóa học</p>
-        <p className="pb-3 800px:pb-1">• Hỗ trợ cao cấp</p>
-      </div>
-
-      <div className="w-full">
-        <div className="w-full 800px:pr-5">
-          <h1 className="text-[25px] font-Roboto font-[600]">
-            {courseData?.name}
-          </h1>
-
-          <div className="flex items-center justify-between pt-3">
-            <div className="flex items-center">
-              <Ratings rating={0} />
-              <h5>0 Đánh giá</h5>
-            </div>
-            <h5>0 Học viên</h5>
-          </div>
-
-          <br />
-          <h1 className="text-[25px] font-Roboto font-[600]">
-            Bạn sẽ học được gì từ khóa học này?
-          </h1>
-        </div>
-
-        {courseData?.benefits?.map((item: any, index: number) => (
-          <div className="w-full flex 800px:items-center py-2" key={index}>
-            <div className="w-[15px] mr-1">
-              <IoCheckmarkDoneOutline size={20} />
-            </div>
-            <p className="pl-2">{item.title}</p>
-          </div>
-        ))}
-
-        <br />
-        <br />
-
-        <h1 className="text-[25px] font-Roboto font-[600]">
-          Những yêu cầu cần thiết để bắt đầu khóa học?
+    {/* CARD GIÁ */}
+    <div className="mt-6 p-6 rounded-2xl bg-white dark:bg-[#0f172a] 
+                    shadow-lg border border-gray-200 dark:border-white/10 w-full">
+      <div className="flex items-end gap-3">
+        <h1 className="text-[32px] font-bold text-blue-600 dark:text-blue-400">
+          {courseData?.price === 0 ? "Miễn phí" : formatPrice(courseData?.price)}
         </h1>
 
-        {courseData?.prerequisites?.map((item: any, index: number) => (
-          <div className="w-full flex 800px:items-center py-2" key={index}>
-            <div className="w-[15px] mr-1">
-              <IoCheckmarkDoneOutline size={20} />
-            </div>
-            <p className="pl-2">{item.title}</p>
-          </div>
-        ))}
+        {courseData?.estimatedPrice && (
+          <span className="text-[18px] line-through text-gray-500">
+            {formatPrice(courseData?.estimatedPrice)}
+          </span>
+        )}
 
-        <br />
-        <br />
-
-        <div className="w-full">
-          <h1 className="text-[25px] font-Roboto font-[600]">
-            Chi tiết khóa học
-          </h1>
-          <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden dark:text-gray-200">
-            {courseData?.description}
-          </p>
-        </div>
-
-        <br />
-        <br />
+        {courseData?.estimatedPrice && (
+          <span className="ml-2 px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold">
+            -{discountPercentengePrice}%
+          </span>
+        )}
       </div>
 
-      <div className="w-full flex items-center justify-between">
+      <button
+        disabled
+        className="mt-6 w-full h-[48px] rounded-xl bg-blue-500 text-white 
+                   font-semibold text-[16px] hover:bg-blue-600 transition cursor-not-allowed"
+      >
+        Mua ngay
+      </button>
+
+      <div className="mt-5 space-y-2 text-gray-700 dark:text-gray-300 text-[15px]">
+        <p>✔ Truy cập trọn đời</p>
+        <p>✔ Bao gồm mã nguồn</p>
+        <p>✔ Cập nhật miễn phí</p>
+        <p>✔ Chứng chỉ hoàn thành</p>
+        <p>✔ Hỗ trợ cao cấp</p>
+      </div>
+    </div>
+
+    {/* CONTENT */}
+    <div className="mt-12 w-full">
+      <h1 className="text-[28px] font-bold text-gray-900 dark:text-white">
+        {courseData?.name}
+      </h1>
+
+      <div className="flex items-center justify-between pt-3 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-2">
+          <Ratings rating={0} />
+          <span>0 đánh giá</span>
+        </div>
+        <span>0 học viên</span>
+      </div>
+
+      <hr className="my-8 border-gray-200 dark:border-white/10" />
+
+      {/* BENEFITS */}
+      <h2 className="text-[22px] font-semibold text-gray-900 dark:text-white">
+        Bạn sẽ học được gì?
+      </h2>
+
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+        {courseData?.benefits?.map((item: any, index: number) => (
+          <div key={index} className="flex gap-2 text-gray-700 dark:text-gray-300">
+            <IoCheckmarkDoneOutline className="text-blue-500 mt-[3px]" />
+            <p>{item.title}</p>
+          </div>
+        ))}
+      </div>
+
+      <hr className="my-8 border-gray-200 dark:border-white/10" />
+
+      {/* PREREQUISITES */}
+      <h2 className="text-[22px] font-semibold text-gray-900 dark:text-white">
+        Yêu cầu trước khi học
+      </h2>
+
+      <div className="mt-4 space-y-2">
+        {courseData?.prerequisites?.map((item: any, index: number) => (
+          <div key={index} className="flex gap-2 text-gray-700 dark:text-gray-300">
+            <IoCheckmarkDoneOutline className="text-blue-500 mt-[3px]" />
+            <p>{item.title}</p>
+          </div>
+        ))}
+      </div>
+
+      <hr className="my-8 border-gray-200 dark:border-white/10" />
+
+      {/* DESCRIPTION */}
+      <h2 className="text-[22px] font-semibold text-gray-900 dark:text-white">
+        Chi tiết khóa học
+      </h2>
+      <p className="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+        {courseData?.description}
+      </p>
+    </div>
+
+    {/* NAV BUTTONS */}
+    <div className="w-full flex items-center justify-between">
         <div
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           onClick={() => prevButton()}
         >
-          Quay lại
+          Trước
         </div>
         <div
           className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           onClick={() => createCourse()}
         >
-          {isEdit ? "Cập nhật" : "Tạo khóa học"}
+         {
+          isEdit ? 'Cập Nhật' : 'Tạo khóa học'
+         }
         </div>
       </div>
-    </div>
-  );
+  </div>
+);
+
 };
 
 export default CoursePreview;

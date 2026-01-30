@@ -31,18 +31,28 @@ const UserAnalytics = ({ isDashboard }: Props) => {
       analyticsData.push({ name: item.month, count: item.count });
     });
 
+  const formatMonthVN = (date: string) => {
+  const d = new Date(date);
+    return `Thg ${d.getMonth() + 1}, ${d.getFullYear()}`;
+  };
+
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <div className={`${!isDashboard ? "mt-[50px]" : "mt-[50px] dark:bg-[#111C43] shadow-sm pb-5 rounded-sm"}`}>
-          <div className={`${isDashboard ? "!ml-8 mb-5" : ""}`}>
-            <h1 className={`${styles.title} ${isDashboard && "!text-[20px]"} px-5 !text-start`}>
+          <div
+            className={`${
+              isDashboard ? "ml-8 mb-5" : "w-[90%] mx-auto"
+            }`}
+          >
+            <h1 className={`${styles.title} ${isDashboard && "!text-[20px]"} !text-start`}>
               Người dùng
             </h1>
             {!isDashboard && (
-              <p className={`${styles.label} px-5`}>
+              <p className={`${styles.label}`}>
                 Dữ liệu phân tích trong 12 tháng gần nhất
               </p>
             )}
@@ -59,9 +69,18 @@ const UserAnalytics = ({ isDashboard }: Props) => {
                   bottom: 0,
                 }}
               >
-                <XAxis dataKey="name" />
+               <XAxis
+                  dataKey="name"
+                  tickFormatter={(value) => formatMonthVN(value)}
+                  tick={{ fontSize: 12 }}
+                />
                 <YAxis />
-                <Tooltip />
+               <Tooltip
+                  labelFormatter={(label) => formatMonthVN(label)}
+                  formatter={(value) => [`${value}`, "Số người dùng"]}
+                />
+
+
                 <Area
                   type="monotone"
                   dataKey="count"

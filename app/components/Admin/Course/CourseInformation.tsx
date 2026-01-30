@@ -104,35 +104,33 @@ const CourseInformation: FC<Props> = ({
         <div className="w-full flex justify-between">
           <div className="w-[45%]">
             <label className={`${styles.label}`}>Giá khóa học</label>
-            <input
-          type="number"
-          required
-          value={courseInfo.price}
-          onChange={(e: any) =>
-            setCourseInfo({ ...courseInfo, price: Number(e.target.value) })
-          }
-          placeholder="Ví dụ: 1.000.000"
-          className={`${styles.input}`}
-        />
-
+           <input
+              type="number"
+              required
+              value={courseInfo.price || ""}
+              onChange={(e: any) =>
+                setCourseInfo({ ...courseInfo, price: Number(e.target.value) })
+              }
+              placeholder="Ví dụ: 1.000.000"
+              className={`${styles.input}`}
+            />
           </div>
           <div className="w-[50%]">
             <label className={`${styles.label} w-[50%]`}>
               Giá ước tính (tùy chọn)
             </label>
             <input
-            type="number"
-            value={courseInfo.estimatedPrice}
-            onChange={(e: any) =>
-              setCourseInfo({
-                ...courseInfo,
-                estimatedPrice: Number(e.target.value),
-              })
-            }
-            placeholder="Ví dụ: 7.900.000"
-            className={`${styles.input}`}
-          />
-
+              type="number"
+              value={courseInfo.estimatedPrice || ""}
+              onChange={(e: any) =>
+                setCourseInfo({
+                  ...courseInfo,
+                  estimatedPrice: Number(e.target.value),
+                })
+              }
+              placeholder="Ví dụ: 7.900.000"
+              className={`${styles.input}`}
+            />
           </div>
         </div>
         <br />

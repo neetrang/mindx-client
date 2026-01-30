@@ -69,7 +69,7 @@ const Profile: FC<Props> = ({ user }) => {
 
       {active === 1 && (
         <div className="w-full h-full bg-transparent mt-[80px]">
-          <ProfileInfo avatar={avatar} user={user} />
+         <ProfileInfo avatar={avatar} />
         </div>
       )}
 

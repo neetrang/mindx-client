@@ -1,4 +1,5 @@
 "use client";
+
 import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,7 +17,6 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
-  refetch: any;
 };
 
 const schema = Yup.object().shape({
@@ -28,9 +28,9 @@ const schema = Yup.object().shape({
     .min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
+const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
-  const [login, { isSuccess, error, data }] = useLoginMutation();
+  const [login, { isSuccess, error }] = useLoginMutation();
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -44,22 +44,24 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
     if (isSuccess) {
       toast.success("Đăng nhập thành công");
       setOpen(false);
-      refetch();
+      // ❌ KHÔNG refetch nữa
+      // ClientLayout sẽ tự gọi /me
     }
-    if (error) {
-      if ("data" in error) {
-        const errorData = error as any;
-        toast.error(errorData.data.message);
-      }
+
+    if (error && "data" in error) {
+      const err = error as any;
+      toast.error(err.data.message);
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, setOpen]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
 
   return (
     <div className="w-full">
       <h1 className={`${styles.title}`}>Đăng nhập với MindX</h1>
+
       <form onSubmit={handleSubmit}>
+        {/* EMAIL */}
         <label className={`${styles.label}`} htmlFor="email">
           Nhập email của bạn
         </label>
@@ -76,6 +78,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           <span className="text-red-500 pt-2 block">{errors.email}</span>
         )}
 
+        {/* PASSWORD */}
         <div className="w-full mt-5 relative mb-1">
           <label className={`${styles.label}`} htmlFor="password">
             Nhập mật khẩu
@@ -91,13 +94,13 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           />
           {!show ? (
             <AiOutlineEyeInvisible
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
+              className="absolute bottom-3 right-2 cursor-pointer"
               size={20}
               onClick={() => setShow(true)}
             />
           ) : (
             <AiOutlineEye
-              className="absolute bottom-3 right-2 z-1 cursor-pointer"
+              className="absolute bottom-3 right-2 cursor-pointer"
               size={20}
               onClick={() => setShow(false)}
             />
@@ -107,12 +110,19 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           )}
         </div>
 
+        {/* SUBMIT */}
         <div className="w-full mt-5">
-          <input type="submit" value="Đăng nhập" className={`${styles.button}`} />
+          <input
+            type="submit"
+            value="Đăng nhập"
+            className={`${styles.button}`}
+          />
         </div>
 
         <br />
-        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
+
+        {/* SOCIAL LOGIN */}
+        <h5 className="text-center pt-4 text-[14px] text-black dark:text-white">
           Hoặc đăng nhập bằng
         </h5>
         <div className="flex items-center justify-center my-3">
@@ -123,12 +133,13 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           />
           <AiFillGithub
             size={30}
-           className="cursor-pointer ml-2 text-black dark:text-white"
+            className="cursor-pointer ml-2 text-black dark:text-white"
             onClick={() => signIn("github")}
           />
         </div>
 
-        <h5 className="text-center pt-4 font-Roboto text-[14px] text-black dark:text-white">
+        {/* SIGNUP */}
+        <h5 className="text-center pt-4 text-[14px] text-black dark:text-white">
           Chưa có tài khoản?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
@@ -138,6 +149,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           </span>
         </h5>
       </form>
+
       <br />
     </div>
   );

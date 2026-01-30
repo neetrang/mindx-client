@@ -1,20 +1,17 @@
-'use client';
+"use client";
 
 import CoursePlayer from "@/app/utils/CoursePlayer";
 import Ratings from "@/app/utils/Ratings";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import CourseContentList from "../Course/CourseContentList";
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
-import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
+import { useSelector } from "react-redux";
 import { FaUserGraduate } from "react-icons/fa";
 import { formatPrice } from "@/app/utils/formatPrice";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckOutForm from "../Payment/CheckOutForm";
-
 
 type Props = {
   data: any;
@@ -22,6 +19,7 @@ type Props = {
   stripePromise: any;
   setRoute: any;
   setOpen: any; // modal login
+  onCreatePayment: (price: number) => Promise<void>; // 🔥
 };
 
 const CourseDetails = ({
@@ -30,33 +28,34 @@ const CourseDetails = ({
   stripePromise,
   setRoute,
   setOpen: openAuthModal,
+  onCreatePayment,
 }: Props) => {
-  const { data: userData, refetch } = useLoadUserQuery(undefined, {});
-  const [user, setUser] = useState<any>(null);
-  const [open, setOpen] = useState(false); // modal thanh toán
+  const user = useSelector((state: any) => state.auth.user);
 
-  useEffect(() => {
-    setUser(userData?.user);
-  }, [userData]);
+  const [open, setOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const discountPercentage =
     ((data?.estimatedPrice - data.price) / data?.estimatedPrice) * 100;
-  const discountPercentagePrice = discountPercentage.toFixed(0);
 
   const isPurchased =
     user && user?.courses?.some((item: any) => item._id === data._id);
 
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
-
   const handleOrder = async () => {
-    if (!user) {
-      setRoute("Login");
-      openAuthModal(true);
-      return;
-    }
+  if (!user) {
+    setRoute("Login");
+    openAuthModal(true);
+    return;
+  }
 
-    setOpen(true); // mở modal thanh toán
-  };
+  setLoading(true);
+  await onCreatePayment(data.price);
+  setLoading(false);
+  setOpen(true);
+};
+
+
 
   const sectionTitleClass =
     "text-xl md:text-2xl font-semibold mb-3 text-gray-900 dark:text-white";
@@ -153,7 +152,7 @@ const CourseDetails = ({
             )}
 
             <span className="text-blue-500">
-              Giảm {discountPercentagePrice}%
+              Giảm {discountPercentage.toFixed(0)}%
             </span>
           </div>
 
@@ -167,10 +166,10 @@ const CourseDetails = ({
           ) : (
             <button
               onClick={handleOrder}
-              disabled={isLoading}
+              disabled={loading}
               className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
-              {isLoading ? "Đang xử lý..." : "Mua ngay"}
+              {loading ? "Đang xử lý..." : "Mua ngay"}
             </button>
           )}
 
@@ -183,13 +182,19 @@ const CourseDetails = ({
         </div>
       </div>
 
-      {/* MODAL STRIPE */}
+     {/* MODAL STRIPE */}
       {open && stripePromise && clientSecret && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="w-[500px] bg-white rounded-xl shadow p-4 relative">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          onClick={() => setOpen(false)} // 🔥 click nền đen để đóng
+        >
+          <div
+            className="w-[500px] bg-white rounded-xl shadow p-4 relative"
+            onClick={(e) => e.stopPropagation()} // 🔥 chặn bubble
+          >
             <IoCloseOutline
               size={32}
-              className="absolute top-3 right-3 cursor-pointer"
+              className="absolute top-3 right-3 cursor-pointer z-50"
               onClick={() => setOpen(false)}
             />
 

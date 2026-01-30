@@ -27,6 +27,7 @@ export default function OrdersAnalytics({ isDashboard }: Props) {
       analyticsData.push({ name: item.name, Count: item.count });
     });
 
+
   return (
     <>
       {isLoading ? (
@@ -34,17 +35,17 @@ export default function OrdersAnalytics({ isDashboard }: Props) {
       ) : (
         <div className={isDashboard ? "h-[30vh]" : "h-screen"}>
           <div
-            className={isDashboard ? "mt-[0px] pl-[40px] mb-2" : "mt-[50px]"}
+            className={`${
+              isDashboard ? "mt-0 mb-2 pl-[40px]" : "mt-[50px] w-[90%] mx-auto"
+            }`}
           >
-            <h1
-              className={`${styles.title} ${
-                isDashboard && "!text-[20px]"
-              } px-5 !text-start`}
-            >
+
+            <h1 className={`${styles.title} ${isDashboard && "!text-[20px]"} !text-start`}>
+
               Đơn hàng
             </h1>
             {!isDashboard && (
-              <p className={`${styles.label} px-5`}>
+              <p className={styles.label}>
                 Dữ liệu phân tích trong 12 tháng gần nhất
               </p>
             )}
@@ -70,9 +71,13 @@ export default function OrdersAnalytics({ isDashboard }: Props) {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis
+                  dataKey="name"
+                />
                 <YAxis />
-                <Tooltip />
+                <Tooltip
+                  formatter={(value) => [`${value}`, "Số đơn hàng"]}
+                />
                 {!isDashboard && <Legend />}
                 <Line type="monotone" dataKey="Count" stroke="#82ca9d" />
               </LineChart>

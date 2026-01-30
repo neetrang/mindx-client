@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
@@ -71,7 +71,10 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
       field: " ",
       headerName: "Xóa",
       flex: 0.2,
-      renderCell: (params: any) => {
+      type: "string",
+      sortable: false,
+      filterable: false,
+      renderCell: (params: GridRenderCellParams<any>) => {
         return (
           <Button
             onClick={() => {
@@ -87,18 +90,8 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
         );
       },
     },
-    {
-      field: "  ",
-      headerName: "Gửi Email",
-      flex: 0.2,
-      renderCell: (params: any) => {
-        return (
-          <a href={`mailto:${params.row.email}`}>
-            <AiOutlineMail className="dark:text-white text-black" size={20} />
-          </a>
-        );
-      },
-    },
+
+    
   ];
 
   const rows: any = [];
@@ -133,8 +126,17 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
   }
 
   const handleSubmit = async () => {
-    await updateUserRole({ email, role });
-  };
+    if (!userId) {
+      toast.error("Vui lòng nhập user ID");
+      return;
+    }
+
+  await updateUserRole({
+    id: userId,
+    role,
+  });
+};
+
 
   const handleDelete = async () => {
     const id = userId;
@@ -209,7 +211,12 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
               },
             }}
           >
-            <DataGrid checkboxSelection rows={rows} columns={columns} />
+            <DataGrid
+              checkboxSelection
+              rows={rows}
+              columns={columns as GridColDef[]}
+            />
+
           </Box>
 
           {/* Modal Thêm Thành Viên */}
@@ -224,12 +231,13 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
                 <h1 className={`${styles.title}`}>Thêm Thành Viên Mới</h1>
                 <div className="mt-4">
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Nhập email..."
+                    type="text"
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    placeholder="Nhập user ID..."
                     className={`${styles.input}`}
                   />
+
                   <select
                     name=""
                     id=""

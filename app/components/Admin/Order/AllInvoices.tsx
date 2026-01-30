@@ -59,24 +59,8 @@ const AllInvoices = ({ isDashboard }: Props) => {
     { field: "price", headerName: "Giá", flex: 0.5 },
 
     ...(isDashboard
-      ? [{ field: "created_at", headerName: "Ngày tạo", flex: 0.5 }]
-      : [
-          {
-            field: " ",
-            headerName: "Gửi email",
-            flex: 0.2,
-            renderCell: (params: any) => {
-              return (
-                <a href={`mailto:${params.row.userEmail}`}>
-                  <AiOutlineMail
-                    className="dark:text-white text-black"
-                    size={20}
-                  />
-                </a>
-              );
-            },
-          },
-        ]),
+  ? [{ field: "created_at", headerName: "Ngày tạo", flex: 0.5 }]
+  : []),
   ];
 
   const rows: any = [];
@@ -146,7 +130,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
             }}
           >
             <DataGrid
-              checkboxSelection={!isDashboard}
+              checkboxSelection={false}
               rows={rows}
               columns={columns}
               slots={{
