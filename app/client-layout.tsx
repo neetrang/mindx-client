@@ -7,7 +7,8 @@ import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
-import socketIO, { Socket } from "socket.io-client";
+import socketIO from "socket.io-client";
+import { useSelector } from "react-redux";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
 
@@ -22,21 +23,18 @@ export const ClientLayout: FC<{ children: React.ReactNode }> = ({ children }) =>
 const InnerProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
 
-  // ✅ restore login từ cookie
+  // ✅ LUÔN gọi /me để restore login từ cookie
   const { isLoading } = useLoadUserQuery({});
 
   useEffect(() => {
     setMounted(true);
+    const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
 
-    const socket: Socket = socketIO(ENDPOINT, {
-      transports: ["websocket"],
-    });
-
-    // ✅ FIX CHÍNH: cleanup phải return void
     return () => {
       socket.disconnect();
     };
   }, []);
+
 
   if (!mounted) return null;
 

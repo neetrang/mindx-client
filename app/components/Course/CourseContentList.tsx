@@ -19,7 +19,7 @@ const CourseContentList: FC<Props> = (props) => {
     ...new Set<string>(props.data?.map((item: any) => item.videoSection)),
   ];
 
-  let totalCount: number = 0; // Tổng số video từ các section trước
+  const totalCount: number = 0; // Tổng số video từ các section trước
 
   const toggleSection = (section: string) => {
     const newVisibleSections = new Set(visibleSections);
@@ -32,77 +32,110 @@ const CourseContentList: FC<Props> = (props) => {
   };
 
   return (
-    <div className={`mt-[15px] w-full ${!props.isDemo && 'ml-[-30px] min-h-screen sticky top-24 left-0 z-30'}`}>
-      {videoSections.map((section: string, sectionIndex: number) => {
+    <div
+      className={`mt-4 w-full ${
+        !props.isDemo &&
+        "ml-[-30px] min-h-screen sticky top-24 left-0 z-30"
+      }`}
+    >
+      {videoSections.map((section: string) => {
         const isSectionVisible = visibleSections.has(section);
 
-        // Lọc video theo section
-        const sectionVideos: any[] = props.data.filter(
+        const sectionVideos = props.data.filter(
           (item: any) => item.videoSection === section
         );
 
-        const sectionVideoCount: number = sectionVideos.length; // Số video trong section
-        const sectionVideoLength: number = sectionVideos.reduce(
-          (totalLength: number, item: any) => totalLength + item.videoLength,
+        const sectionVideoCount = sectionVideos.length;
+        const sectionVideoLength = sectionVideos.reduce(
+          (total: number, item: any) => total + item.videoLength,
           0
         );
-        const sectionStartIndex: number = totalCount; // Chỉ số bắt đầu của video trong danh sách tổng
-        totalCount += sectionVideoCount; // Cập nhật tổng số video
 
-        const sectionContentHours: number = sectionVideoLength / 60;
+        const sectionContentHours = sectionVideoLength / 60;
 
         return (
-          <div className={`${!props.isDemo && 'border-b border-[#ece2e21c] dark:border-[#ffffff8e] pb-2'}`} key={section}>
-            <div className="w-full flex">
-              {/* Render tiêu đề section */}
-              <div className="w-full flex justify-between items-center">
-                <h2 className="text-[22px] text-black dark:text-white">{section}</h2>
-                <button
-                  className="mr-4 cursor-pointer text-black dark:text-white"
-                  onClick={() => toggleSection(section)}
-                >
-                  {isSectionVisible ? (
-                    <BsChevronUp size={20} />
-                  ) : (
-                    <BsChevronDown size={20} />
-                  )}
-                </button>
+          <div
+            key={section}
+            className="mb-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-slate-900 shadow-sm"
+          >
+            {/* SECTION HEADER */}
+            <div
+              onClick={() => toggleSection(section)}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition"
+            >
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {section}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {sectionVideoCount} bài học ·{" "}
+                  {sectionVideoLength < 60
+                    ? sectionVideoLength
+                    : sectionContentHours.toFixed(2)}{" "}
+                  {sectionVideoLength > 60 ? "giờ" : "phút"}
+                </p>
               </div>
+
+              {isSectionVisible ? (
+                <BsChevronUp
+                  size={20}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              ) : (
+                <BsChevronDown
+                  size={20}
+                  className="text-gray-600 dark:text-gray-300"
+                />
+              )}
             </div>
-            <h5 className="text-black dark:text-white">
-              {sectionVideoCount} Bài học ·{" "}
-              {sectionVideoLength < 60
-                ? sectionVideoLength
-                : sectionContentHours.toFixed(2)}{" "}
-              {sectionVideoLength > 60 ? "giờ" : "phút"}
-            </h5>
-            <br />
+
+            {/* VIDEO LIST */}
             {isSectionVisible && (
-              <div className="w-full">
+              <div className="border-t border-gray-200 dark:border-white/10">
                 {sectionVideos.map((item: any, index: number) => {
-                  const videoIndex: number = sectionStartIndex + index; // Chỉ số video trong danh sách tổng
-                  const contentLength: number = item.videoLength / 60;
+                  const videoIndex = index;
+
+                  const contentLength = item.videoLength / 60;
+
+                  const isActive = videoIndex === props.activeVideo;
+
                   return (
                     <div
-                      className={`w-full ${
-                        videoIndex === props.activeVideo ? "bg-slate-100 dark:bg-slate-800" : ""
-                      } cursor-pointer transition-all p-2`}
                       key={item._id}
-                      onClick={() => props.isDemo ? null : props?.setActiveVideo(videoIndex)}
+                      onClick={() =>
+                        props.isDemo ? null : props.setActiveVideo(videoIndex)
+                      }
+                      className={`flex items-start gap-3 p-3 cursor-pointer transition
+                        ${
+                          isActive
+                            ? "bg-blue-50 dark:bg-blue-900/30"
+                            : "hover:bg-gray-50 dark:hover:bg-white/5"
+                        }
+                      `}
                     >
-                      <div className="flex items-start">
-                        <MdOutlineOndemandVideo
-                          size={25}
-                          className="mr-2 text-blue-500 dark:text-blue-400"
-                        />
-                        <h1 className="text-[18px] inline-block break-words text-black dark:text-white">
+                      <MdOutlineOndemandVideo
+                        size={22}
+                        className="text-blue-500 dark:text-blue-400 mt-1"
+                      />
+
+                      <div className="flex-1">
+                        <p
+                          className={`text-sm font-medium break-words ${
+                            isActive
+                              ? "text-blue-600 dark:text-blue-300"
+                              : "text-gray-900 dark:text-gray-200"
+                          }`}
+                        >
                           {item.title}
-                        </h1>
+                        </p>
+
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {item.videoLength > 60
+                            ? contentLength.toFixed(2)
+                            : item.videoLength}{" "}
+                          {item.videoLength > 60 ? "giờ" : "phút"}
+                        </span>
                       </div>
-                      <h5 className="pl-8 text-black dark:text-white">
-                        {item.videoLength > 60 ? contentLength.toFixed(2) : item.videoLength}{" "}
-                        {item.videoLength > 60 ? "giờ" : "phút"}
-                      </h5>
                     </div>
                   );
                 })}
@@ -113,6 +146,7 @@ const CourseContentList: FC<Props> = (props) => {
       })}
     </div>
   );
+
 };
 
 export default CourseContentList;

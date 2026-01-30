@@ -86,11 +86,11 @@ const CheckoutForm = ({ setOpen, data, user }: Props) => {
         await refetch();     // 🔥 update redux.user
         setOpen(false);      // 🔥 đóng modal thanh toán
 
-        socketRef.current?.emit("notification", {
-          title: "New Order",
-          message: "Bạn có đơn hàng mới",
-          userId: user._id,
-        });
+      socketRef.current?.emit("notification", {
+        title: "Đơn hàng mới",
+        message: "Một học viên vừa đăng ký khóa học",
+        userId: user._id,
+      });
 
         toast.success("Thanh toán thành công 🎉");
         // ❌ KHÔNG redirect ở đây → để user tự bấm “Vào khóa học”

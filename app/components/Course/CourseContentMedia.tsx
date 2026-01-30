@@ -106,75 +106,81 @@ const CourseContentMedia = ({
     }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setQuestion("");
-      refetch();
+useEffect(() => {
+  if (isSuccess) {
+    setQuestion("");
+    refetch();
+
+    socketId.emit("notification", {
+      title: "Có câu hỏi mới",
+      message: `Một học viên vừa đặt câu hỏi trong bài "${data[activeVideo].title}"`,
+      userId: user._id,
+    });
+
+    toast.success("Đã gửi câu hỏi thành công");
+  }
+
+  if (answerSuccess) {
+    setAnswer("");
+    refetch();
+
+    if (user.role !== "admin") {
       socketId.emit("notification", {
-        title: `Câu hỏi mới đã nhận được`,
-        message: `Bạn có một câu hỏi mới trong ${data[activeVideo].title}`,
+        title: "Câu hỏi đã được trả lời",
+        message: `Câu hỏi của bạn trong bài "${data[activeVideo].title}" đã có phản hồi mới`,
         userId: user._id,
       });
     }
-    if (answerSuccess) {
-      setAnswer("");
-      refetch();
-      if (user.role !== "admin") {
-        socketId.emit("notification", {
-          title: `Đã nhận được phản hồi mới`,
-          message: `Bạn có một câu hỏi mới trong ${data[activeVideo].title}`,
-          userId: user._id,
-        });
-      }
-    }
-    if (error) {
-      if ("data" in error) {
-        const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-    if (answerError) {
-      if ("data" in answerError) {
-        const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-    if (reviewSuccess) {
-      setReview("");
-      setRating(1);
-      courseRefetch();
-      socketId.emit("notification", {
-        title: `Câu hỏi mới đã nhận được`,
-        message: `Bạn có một câu hỏi mới trong ${data[activeVideo].title}`,
-        userId: user._id,
-      });
-    }
-    if (reviewError) {
-      if ("data" in reviewError) {
-        const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-    if (replySuccess) {
-      setReply("");
-      courseRefetch();
-    }
-    if (replyError) {
-      if ("data" in replyError) {
-        const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
-      }
-    }
-  }, [
-    isSuccess,
-    error,
-    answerSuccess,
-    answerError,
-    reviewSuccess,
-    reviewError,
-    replySuccess,
-    replyError,
-  ]);
+
+    toast.success("Đã gửi câu trả lời");
+  }
+
+  if (reviewSuccess) {
+    setReview("");
+    setRating(1);
+    courseRefetch();
+
+    socketId.emit("notification", {
+      title: "Có đánh giá mới",
+      message: `Khóa học "${data[activeVideo].title}" vừa nhận được một đánh giá mới`,
+      userId: user._id,
+    });
+
+    toast.success("Đánh giá của bạn đã được gửi");
+  }
+
+  if (replySuccess) {
+    setReply("");
+    courseRefetch();
+    toast.success("Đã gửi phản hồi");
+  }
+
+  if (error && "data" in error) {
+    toast.error((error as any).data.message);
+  }
+
+  if (answerError && "data" in answerError) {
+    toast.error((answerError as any).data.message);
+  }
+
+  if (reviewError && "data" in reviewError) {
+    toast.error((reviewError as any).data.message);
+  }
+
+  if (replyError && "data" in replyError) {
+    toast.error((replyError as any).data.message);
+  }
+}, [
+  isSuccess,
+  answerSuccess,
+  reviewSuccess,
+  replySuccess,
+  error,
+  answerError,
+  reviewError,
+  replyError,
+]);
+
 
   const handleAnswerSubmit = () => {
     addAnswerInQuestion({
@@ -245,24 +251,27 @@ const CourseContentMedia = ({
         {data[activeVideo].title}
       </h1>
       <br />
-      <div className="w-full p-4 flex items-center justify-between bg-slate-500 bg-opacity-20 backdrop-blur shadow-[bg-slate-700] rounded shadow-inner">
+      <div className="w-full flex items-center gap-2 p-2 rounded-xl bg-white/70 dark:bg-slate-800/70 backdrop-blur border dark:border-white/10 shadow-sm">
         {["Tổng quan", "Bài tập", "Hỏi đáp", "Đánh giá"].map((text, index) => (
-          <h5
+          <button
             key={index}
-            className={`800px:text-[20px] cursor-pointer ${
-              activeBar === index
-                ? "text-red-500"
-                : "dark:text-white text-black"
-            }`}
             onClick={() => setactiveBar(index)}
+            className={`px-5 py-2 rounded-lg text-sm md:text-base font-medium transition-all duration-200
+              ${
+                activeBar === index
+                  ? "bg-blue-500 text-white shadow"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10"
+              }
+            `}
           >
             {text}
-          </h5>
+          </button>
         ))}
       </div>
+
       <br />
       {activeBar === 0 && (
-        <p className="text-[18px] whitespace-pre-line mb-3 dark:text-white text-black">
+        <p className="text-[18px] whitespace-pre-line break-words break-all mb-3 dark:text-white text-black">
           {data[activeVideo]?.description}
         </p>
       )}
@@ -286,46 +295,37 @@ const CourseContentMedia = ({
       )}
 
       {activeBar === 2 && (
-        <>
-          <div className="flex w-full">
-            <Image
-              src={
-                user.avatar
-                  ? user.avatar.url
-                  : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-              }
-              width={50}
-              height={50}
-              alt=""
-              className="w-[50px] h-[50px] rounded-full object-cover"
-            />
-            <textarea
-              name=""
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              id=""
-              cols={40}
-              rows={5}
-              placeholder="Viết bình luận của bạn..."
-              className="outline-none bg-transparent ml-3 border dark:text-white text-black border-[#0000001d] dark:border-[#ffffff57] 800px:w-full p-2 rounded w-[90%] 800px:text-[18px] font-Roboto"
-            ></textarea>
-          </div>
-          <div className="w-full flex justify-end">
-            <div
-              className={`${
-                styles.button
-              } !w-[120px] !h-[40px] text-[18px] mt-5 ${
-                questionCreationLoading && "cursor-not-allowed"
-              }`}
-              onClick={questionCreationLoading ? () => {} : handleQuestion}
-            >
-              Gửi 
+        <div className="space-y-6">
+          {/* INPUT */}
+          <div className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm">
+            <div className="flex gap-3">
+              <Image
+                src={user.avatar?.url || "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"}
+                width={50}
+                height={50}
+                alt=""
+                className="w-[50px] h-[50px] rounded-full object-cover"
+              />
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Hỏi điều bạn chưa hiểu về bài học này..."
+                className="w-full resize-none bg-transparent border border-gray-200 dark:border-white/10 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end mt-3">
+              <button
+                onClick={handleQuestion}
+                className="px-5 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+              >
+                Gửi câu hỏi
+              </button>
             </div>
           </div>
-          <br />
-          <br />
-          <div className="w-full h-[1px] bg-[#ffffff3b]"></div>
-          <div>
+
+          {/* LIST */}
+          <div className="space-y-4">
             <CommentReply
               data={data}
               activeVideo={activeVideo}
@@ -338,174 +338,84 @@ const CourseContentMedia = ({
               answerCreationLoading={answerCreationLoading}
             />
           </div>
-        </>
+        </div>
       )}
 
       {activeBar === 3 && (
-        <div className="w-full">
-          <>
-            {!isReviewExists && (
-              <>
-                <div className="flex w-full">
-                  <Image
-                    src={
-                      user.avatar
-                        ? user.avatar.url
-                        : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-                    }
-                    width={50}
-                    height={50}
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-full object-cover"
-                  />
-                  <div className="w-full">
-                    <h5 className="pl-3 text-[20px] font-[500] dark:text-white text-black ">
-                      Đánh giá <span className="text-red-500">*</span>
-                    </h5>
-                    <div className="flex w-full ml-2 pb-3">
-                      {[1, 2, 3, 4, 5].map((i) =>
-                        rating >= i ? (
-                          <AiFillStar
-                            key={i}
-                            className="mr-1 cursor-pointer"
-                            color="rgb(246,186,0)"
-                            size={25}
-                            onClick={() => setRating(i)}
-                          />
-                        ) : (
-                          <AiOutlineStar
-                            key={i}
-                            className="mr-1 cursor-pointer"
-                            color="rgb(246,186,0)"
-                            size={25}
-                            onClick={() => setRating(i)}
-                          />
-                        )
-                      )}
-                    </div>
-                    <textarea
-                      name=""
-                      value={review}
-                      onChange={(e) => setReview(e.target.value)}
-                      id=""
-                      cols={40}
-                      rows={5}
-                      placeholder="Viết một câu hỏi..."
-                      className="outline-none bg-transparent 800px:ml-3 dark:text-white text-black border border-[#00000027] dark:border-[#ffffff57] w-[95%] 800px:w-full p-2 rounded text-[18px] font-Roboto"
-                    ></textarea>
-                  </div>
-                </div>
-                <div className="w-full flex justify-end">
-                  <div
-                    className={`${
-                      styles.button
-                    } !w-[120px] !h-[40px] text-[18px] mt-5 800px:mr-0 mr-2 ${
-                      reviewCreationLoading && "cursor-no-drop"
-                    }`}
-                    onClick={
-                      reviewCreationLoading ? () => {} : handleReviewSubmit
-                    }
-                  >
-                    Gửi
-                  </div>
-                </div>
-              </>
-            )}
-            <br />
-            <div className="w-full h-[1px] bg-[#ffffff3b]"></div>
-            <div className="w-full">
-              {(course?.reviews && [...course.reviews].reverse())?.map(
-                (item: any, index: number) => {
-                  
-                  return (
-                    <div className="w-full my-5 dark:text-white text-black" key={index}>
-                      <div className="w-full flex">
-                        <div>
-                          <Image
-                            src={
-                              item.user.avatar
-                                ? item.user.avatar.url
-                                : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-                            }
-                            width={50}
-                            height={50}
-                            alt=""
-                            className="w-[50px] h-[50px] rounded-full object-cover"
-                          />
-                        </div>
-                        <div className="ml-2">
-                          <h1 className="text-[18px]">{item?.user.name}</h1>
-                          <Ratings rating={item.rating} />
-                          <p>{item.comment}</p>
-                          <small className="text-[#0000009e] dark:text-[#ffffff83]">
-                            {format(item.createdAt, "vi")} •
-                          </small>
-                        </div>
-                      </div>
-                      {user.role === "admin" && item.commentReplies.length === 0 && (
-                        <span
-                          className={`${styles.label} !ml-10 cursor-pointer`}
-                          onClick={() => {
-                            setIsReviewReply(true);
-                            setReviewId(item._id);
-                          }}
-                        >
-                          Trả lời
-                        </span>
-                      )}
+        <div className="space-y-6">
+          {/* FORM */}
+          {!isReviewExists && (
+            <div className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-5 shadow-sm">
+              <h3 className="text-xl font-semibold mb-3">Đánh giá khóa học</h3>
 
-                      {isReviewReply && reviewId === item._id && (
-                        <div className="w-full flex relative">
-                          <input
-                            type="text"
-                            placeholder="Gửi câu trả lời của bạn..."
-                            value={reply}
-                            onChange={(e: any) => setReply(e.target.value)}
-                            className="block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#000] dark:border-[#fff] p-[5px] w-[95%]"
-                          />
-                          <button
-                            type="submit"
-                            className="absolute right-0 bottom-1"
-                            onClick={handleReviewReplySubmit}
-                          >
-                            Gửi
-                          </button>
-                        </div>
-                      )}
+              <div className="flex items-center gap-2 mb-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <button key={i} onClick={() => setRating(i)}>
+                    {rating >= i ? (
+                      <AiFillStar size={28} color="#facc15" />
+                    ) : (
+                      <AiOutlineStar size={28} color="#facc15" />
+                    )}
+                  </button>
+                ))}
+              </div>
 
-                      {item.commentReplies.map((i: any, index: number) => (
-                        <div className="w-full flex 800px:ml-16 my-5" key={index}>
-                          <div className="w-[50px] h-[50px]">
-                            <Image
-                              src={
-                                i.user.avatar
-                                  ? i.user.avatar.url
-                                  : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-                              }
-                              width={50}
-                              height={50}
-                              alt=""
-                              className="w-[50px] h-[50px] rounded-full object-cover"
-                            />
-                          </div>
-                          <div className="pl-2">
-                            <div className="flex items-center">
-                              <h5 className="text-[20px]">{i.user.name}</h5>{" "}
-                              <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
-                            </div>
-                            <p>{i.comment}</p>
-                            <small className="text-[#0000009e] dark:text-[#ffffff83] ">
-                              {format(item.createdAt, "vi")} •
-                            </small>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
-              )}
+              <textarea
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                placeholder="Chia sẻ trải nghiệm của bạn..."
+                className="w-full resize-none bg-transparent border border-gray-200 dark:border-white/10 rounded-lg p-3"
+              />
+
+              <div className="flex justify-end mt-3">
+                <button
+                  onClick={handleReviewSubmit}
+                  className="px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Gửi đánh giá
+                </button>
+              </div>
             </div>
-          </>
+          )}
+
+          {/* LIST */}
+          <div className="space-y-4">
+            {course?.reviews
+              ?.slice()
+              .reverse()
+              .map((item: any) => (
+                <div
+                  key={item._id}
+                  className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm"
+                >
+                  <div className="flex gap-3">
+                    <Image
+                      src={item.user.avatar?.url || "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"}
+                      width={50}
+                      height={50}
+                      alt=""
+                      className="w-[50px] h-[50px] rounded-full object-cover"
+                    />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                        {item.user.name}
+                      </h4>
+                      <Ratings rating={item.rating} />
+                    </div>
+
+                    <p className="mt-1 text-gray-800 dark:text-gray-300 break-words">
+                      {item.comment}
+                    </p>
+
+                    <small className="text-gray-500 dark:text-gray-400">
+                      {format(item.createdAt, "vi")}
+                    </small>
+                  </div>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       )}
     </div>
@@ -554,113 +464,152 @@ const CommentItem = ({
   handleAnswerSubmit,
   answerCreationLoading,
 }: any) => {
-  const [replyActive, setreplyActive] = useState(false);
-  return (
-    <>
-      <div className="my-4">
-        <div className="flex mb-2">
-          <div>
-            <Image
-              src={
-                item.user.avatar
-                  ? item.user.avatar.url
-                  : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-              }
-              width={50}
-              height={50}
-              alt=""
-              className="w-[50px] h-[50px] rounded-full object-cover"
-            />
-          </div>
-          <div className="pl-3 dark:text-white text-black">
-            <h5 className="text-[20px]">{item?.user.name}</h5>
-            <p>{item?.question}</p>
-            <small className="text-[#000000b8] dark:text-[#ffffff83]">
-              {!item.createdAt ? "" : format(item?.createdAt)} •
-            </small>
-          </div>
-        </div>
-        <div className="w-full flex">
-          <span
-            className="800px:pl-16 text-[#000000b8] dark:text-[#ffffff83] cursor-pointer mr-2"
-            onClick={() => {
-              setreplyActive(!replyActive);
-              setQuestionId(item._id);
-            }}
-          >
-            {!replyActive
-              ? item.questionReplies.length !== 0
-                ? "Tất cả các phản hồi"
-                : "Trả lời"
-              : "Ẩn trả lời"}
-          </span>
-          <BiMessage
-            size={20}
-            className="dark:text-[#ffffff83] cursor-pointer text-[#000000b8]"
-          />
-          <span className="pl-1 mt-[-4px] cursor-pointer text-[#000000b8] dark:text-[#ffffff83]">
-            {item.questionReplies.length}
-          </span>
-        </div>
+  const [replyActive, setReplyActive] = useState(false);
 
-        {replyActive && questionId === item._id &&  (
-          <>
-            {item.questionReplies.map((item: any) => (
-              <div className="w-full flex 800px:ml-16 my-5 text-black dark:text-white" key={item._id}>
-                <div>
-                  <Image
-                    src={
-                      item.user.avatar
-                        ? item.user.avatar.url
-                        : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-                    }
-                    width={50}
-                    height={50}
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-full object-cover"
-                  />
-                </div>
-                <div className="pl-3">
-                  <div className="flex items-center">
-                    <h5 className="text-[20px]">{item.user.name}</h5>{" "}
-                    {item.user.role === "admin" && (
-                      <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
-                    )}
-                  </div>
-                  <p>{item.answer}</p>
-                  <small className="text-[#ffffff83]">
-                    {format(item.createdAt, "vi")} •
-                  </small>
-                </div>
-              </div>
-            ))}
-            <>
-              <div className="w-full flex relative dark:text-white text-black">
-                <input
-                  type="text"
-                  placeholder="Gửi câu trả lời của bạn..."
-                  value={answer}
-                  onChange={(e: any) => setAnswer(e.target.value)}
-                  className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] ${
-                    answer === "" ||
-                    (answerCreationLoading && "cursor-not-allowed")
-                  }`}
-                />
-                <button
-                  type="submit"
-                  className="absolute right-0 bottom-1"
-                  onClick={handleAnswerSubmit}
-                  disabled={answer === "" || answerCreationLoading}
-                >
-                  <IoSend size={20} />
-                </button>
-              </div>
-              <br />
-            </>
-          </>
-        )}
+  return (
+    <div className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm my-4">
+      {/* QUESTION */}
+      <div className="flex gap-3">
+        <Image
+          src={
+            item.user.avatar
+              ? item.user.avatar.url
+              : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+          }
+          width={50}
+          height={50}
+          alt=""
+          className="w-[50px] h-[50px] rounded-full object-cover"
+        />
+
+        <div className="flex-1">
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold text-black dark:text-white">
+              {item.user.name}
+            </h4>
+            <span className="text-xs text-gray-500">
+              {format(item.createdAt, "vi")}
+            </span>
+          </div>
+
+          <p className="mt-1 text-gray-800 dark:text-gray-200">
+            {item.question}
+          </p>
+
+          <div className="flex items-center gap-4 mt-2 text-sm text-blue-500">
+            <button
+              onClick={() => {
+                setReplyActive(!replyActive);
+                setQuestionId(item._id);
+              }}
+              className="hover:underline"
+            >
+              {replyActive
+                ? "Ẩn trả lời"
+                : item.questionReplies.length > 0
+                ? `Xem ${item.questionReplies.length} trả lời`
+                : "Trả lời"}
+            </button>
+
+            <span className="text-gray-400 flex items-center gap-1">
+              <BiMessage size={16} /> {item.questionReplies.length}
+            </span>
+          </div>
+        </div>
       </div>
-    </>
+
+      {/* REPLIES */}
+      {replyActive && questionId === item._id && (
+        <div className="
+          mt-4 ml-10 space-y-3 pl-4
+          border-l border-gray-200 dark:border-white/10
+        ">
+          {item.questionReplies?.map((reply: any, index: number) => (
+            <div
+              key={reply._id ?? index}
+              className={`
+                flex gap-3 p-3 rounded-xl
+                transition
+                ${
+                  reply.user.role === "admin"
+                    ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-300/30"
+                    : "bg-gray-100 dark:bg-slate-700"
+                }
+              `}
+            >
+              <Image
+                src={
+                  reply.user.avatar
+                    ? reply.user.avatar.url
+                    : "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+                }
+                width={40}
+                height={40}
+                alt=""
+                className="w-[40px] h-[40px] rounded-full object-cover"
+              />
+
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                    {reply.user.name}
+                  </span>
+
+                  {reply.user.role === "admin" && (
+                    <span className="text-[10px] px-2 py-[2px] rounded-full bg-blue-500 text-white">
+                      Admin
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-sm mt-1 text-gray-800 dark:text-gray-200 break-words">
+                  {reply.answer}
+                </p>
+
+                <small className="text-xs text-gray-500 dark:text-gray-400">
+                  {format(reply.createdAt, "vi")}
+                </small>
+              </div>
+            </div>
+          ))}
+
+          {/* INPUT REPLY */}
+          <div className="flex gap-2 pt-3">
+            <input
+              type="text"
+              placeholder="Nhập câu trả lời..."
+              value={answer}
+              onChange={(e: any) => setAnswer(e.target.value)}
+              className="
+                flex-1 rounded-lg px-3 py-2
+                bg-white dark:bg-slate-800
+                text-gray-800 dark:text-gray-200
+                placeholder-gray-400 dark:placeholder-gray-500
+                border border-gray-200 dark:border-white/10
+                text-sm outline-none
+                focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                transition
+              "
+            />
+
+            <button
+              onClick={handleAnswerSubmit}
+              disabled={!answer || answerCreationLoading}
+              className="
+                px-4 py-2 rounded-lg
+                bg-blue-500 text-white
+                hover:bg-blue-600
+                active:scale-95
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition
+              "
+            >
+              Gửi
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
