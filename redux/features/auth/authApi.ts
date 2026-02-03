@@ -6,14 +6,18 @@ type RegistrationResponse = {
   activationToken: string;
 };
 
-type RegistrationData = {};
+type RegistrationData = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // endpoints here
     register: builder.mutation<RegistrationResponse, RegistrationData>({
       query: (data) => ({
-        url: "registration",
+        url: "/registration",
         method: "POST",
         body: data,
         credentials: "include" as const,
