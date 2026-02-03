@@ -48,8 +48,13 @@ const Signup: FC<Props> = ({ setRoute }) => {
     initialValues: { name: "", email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ name, email, password }) => {
-      await register({ name, email, password });
-    },
+  try {
+    await register({ name, email, password }).unwrap();
+  } catch (err: any) {
+    toast.error(err?.data?.message || "Đăng ký thất bại");
+  }
+},
+
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
