@@ -271,26 +271,32 @@ useEffect(() => {
 
       <br />
       {activeBar === 0 && (
-        <p className="text-[18px] whitespace-pre-line break-words break-all mb-3 dark:text-white text-black">
-          {data[activeVideo]?.description}
-        </p>
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm">
+            <p className="text-base whitespace-pre-line break-words text-black dark:text-white">
+              {data[activeVideo]?.description}
+            </p>
+          </div>
+        </div>
       )}
 
       {activeBar === 1 && (
-        <div>
-          {data[activeVideo]?.links.map((item: any, index: number) => (
-            <div className="mb-5" key={index}>  
-              <h2 className="800px:text-[20px] 800px:inline-block dark:text-white text-black">
-                {item.title && item.title + " :"}
-              </h2>
-              <a
-                className="inline-block text-[#4395c4] 800px:text-[20px] 800px:pl-2"
-                href={item.url}
-              >
-                {item.url}
-              </a>
-            </div>
-          ))}
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm">
+            {data[activeVideo]?.links.map((item: any, index: number) => (
+              <div className="mb-4 text-base" key={index}>
+                <h2 className="inline-block text-black dark:text-white font-medium">
+                  {item.title && item.title + " :"}
+                </h2>
+                <a
+                  className="inline-block text-blue-500 pl-2 hover:underline break-all"
+                  href={item.url}
+                >
+                  {item.url}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
