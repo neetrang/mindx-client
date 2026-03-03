@@ -23,29 +23,41 @@ export const ClientLayout: FC<{ children: React.ReactNode }> = ({ children }) =>
 
 const InnerProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
+  const [socialReady, setSocialReady] = useState(false);
+
   const { data: session, status } = useSession();
 
-  // 🔥 Khi login Google thành công → gọi social-auth từ CLIENT
+  // 🔥 1️⃣ Gọi social-auth và chờ hoàn thành
   useEffect(() => {
-    if (session?.user) {
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/social-auth`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 🔥 cực kỳ quan trọng
-        body: JSON.stringify({
-          email: session.user.email,
-          name: session.user.name,
-          avatar: session.user.image,
-        }),
-      });
-    }
+    const handleSocialAuth = async () => {
+      if (session?.user) {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/social-auth`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              email: session.user.email,
+              name: session.user.name,
+              avatar: session.user.image,
+            }),
+          });
+
+          setSocialReady(true); // 🔥 chỉ khi cookie set xong
+        } catch (err) {
+          console.error("Social auth failed:", err);
+        }
+      }
+    };
+
+    handleSocialAuth();
   }, [session]);
 
-  // 🔥 Sau khi cookie được set → /me mới hoạt động
+  // 🔥 2️⃣ Chỉ gọi /me sau khi social-auth hoàn thành
   const { isLoading } = useLoadUserQuery(undefined, {
-    skip: !session, // tránh gọi quá sớm
+    skip: !socialReady,
   });
 
   useEffect(() => {
