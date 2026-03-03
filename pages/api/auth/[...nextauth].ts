@@ -13,35 +13,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
   ],
-
   secret: process.env.NEXTAUTH_SECRET,
-
-  callbacks: {
-    async signIn({ user }) {
-      try {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URI}/api/v1/social-auth`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              email: user.email,
-              name: user.name,
-              avatar: user.image,
-            }),
-          }
-        );
-
-        return true;
-      } catch (error) {
-        console.error("Social auth error:", error);
-        return false;
-      }
-    },
-  },
 };
 
 export default NextAuth(authOptions);
