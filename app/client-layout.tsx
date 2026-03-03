@@ -28,7 +28,7 @@ const InnerProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   // 🔥 Khi login Google thành công → gọi social-auth từ CLIENT
   useEffect(() => {
     if (session?.user) {
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/v1/social-auth`, {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/social-auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
