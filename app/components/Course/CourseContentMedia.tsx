@@ -413,19 +413,19 @@ useEffect(() => {
                         {item.user.name}
                       </h4>
                       <Ratings rating={item.rating} />
+                      <span className="text-xs text-gray-500">
+                      {format(item.createdAt, "vi")}
+                    </span>
                     </div>
 
                     <p className="mt-1 text-gray-800 dark:text-gray-300 break-words">
                       {item.comment}
                     </p>
-
-                    <small className="text-gray-500 dark:text-gray-400">
-                      {format(item.createdAt, "vi")}
-                    </small>
+                    <div className="flex items-center gap-4 mt-2 text-sm text-blue-500">
                     {user?.role === "admin" &&
                     !item.commentReplies?.some((r: any) => r.user.role === "admin") && (
                       <button
-                      className="text-sm text-blue-500 mt-2 hover:underline"
+                      className=" hover:underline"
                       onClick={() => {
                         setIsReviewReply(!isReviewReply);
                         setReviewId(item._id);
@@ -438,6 +438,7 @@ useEffect(() => {
                         : "Phản hồi"}
                     </button>
                     )}
+          </div>
                     {user?.role === "admin" &&
                     !item.commentReplies?.some((r: any) => r.user.role === "admin") &&
                     isReviewReply &&
@@ -464,10 +465,11 @@ useEffect(() => {
                         onClick={() => handleReviewReplySubmit(item._id)}
                         className="
                           px-4 py-2 rounded-lg
-                          bg-blue-500 text-white
-                          hover:bg-blue-600
-                          active:scale-95
-                          transition
+                bg-blue-500 text-white
+                hover:bg-blue-600
+                active:scale-95
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition
                         "
                       >
                         Gửi
