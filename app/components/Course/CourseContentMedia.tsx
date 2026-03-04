@@ -448,10 +448,6 @@ useEffect(() => {
                                 : "Phản hồi"}
                             </button>
                           )}
-
-                        <span className="text-gray-400 flex items-center gap-1">
-                          <BiMessage size={16} /> {item.commentReplies?.length || 0}
-                        </span>
                       </div>
 
                       {/* THREAD */}
@@ -459,8 +455,7 @@ useEffect(() => {
                         (isReviewReply && reviewId === item._id)) && (
                         <div
                           className="
-                            mt-4 ml-10 space-y-3 pl-4
-                            border-l border-gray-200 dark:border-white/10
+                            mt-4 ml-10 space-y-3 pl-4 border-l border-gray-200 dark:border-white/10
                           "
                         >
                           {item.commentReplies?.map((reply: any, index: number) => (
