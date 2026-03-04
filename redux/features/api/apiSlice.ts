@@ -6,20 +6,40 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
 });
 
-export const apiSlice = createApi({
-  reducerPath: "api",
-  baseQuery,
-  endpoints: (builder) => ({
+// 🔥 Auto refresh token
+const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+  let result = await baseQuery(args, api, extraOptions);
 
-    // 1. refresh token
-    refreshToken: builder.mutation({
-      query: () => ({
+  // nếu access token hết hạn
+  if (result?.error?.status === 401) {
+    console.log("Access token expired → refreshing...");
+
+    const refreshResult: any = await baseQuery(
+      {
         url: "refresh",
         method: "GET",
-      }),
-    }),
+      },
+      api,
+      extraOptions
+    );
 
-    // 2. load user
+    if (refreshResult?.data) {
+      console.log("Token refreshed");
+
+      // gọi lại request ban đầu
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      api.dispatch(userLoggedOut());
+    }
+  }
+
+  return result;
+};
+
+export const apiSlice = createApi({
+  reducerPath: "api",
+  baseQuery: baseQueryWithReauth,
+  endpoints: (builder) => ({
     loadUser: builder.query({
       query: () => ({
         url: "me",
@@ -28,6 +48,7 @@ export const apiSlice = createApi({
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
+
           dispatch(
             userLoggedIn({
               accessToken: data.accessToken,
@@ -42,7 +63,4 @@ export const apiSlice = createApi({
   }),
 });
 
-export const {
-  useRefreshTokenMutation,
-  useLoadUserQuery,
-} = apiSlice;
+export const { useLoadUserQuery } = apiSlice;
