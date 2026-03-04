@@ -55,6 +55,20 @@ const CourseContentMedia = ({
   const [reviewId, setReviewId] = useState("");
   const [isReviewReply, setIsReviewReply] = useState(false);
 
+  const handleReviewReplySubmit = async (reviewIdParam: string) => {
+  if (reply === "") {
+    toast.error("Phản hồi không thể để trống");
+  } else {
+    await addReplyInReview({
+      comment: reply,
+      courseId: id,
+      reviewId: reviewIdParam,
+    });
+
+    setReply("");
+    setIsReviewReply(false);
+  }
+};
   const [
     addNewQuestion,
     { isSuccess, error, isLoading: questionCreationLoading },
@@ -199,15 +213,6 @@ useEffect(() => {
     }
   };
 
-  const handleReviewReplySubmit = () => {
-    if (!replyCreationLoading) {
-      if (reply === "") {
-        toast.error("Phản hồi không thể để trống");
-      } else {
-        addReplyInReview({ comment: reply, courseId: id, reviewId });
-      }
-    }
-  };
 
   return (
     <div className="w-[95%] 800px:w-[86%] py-4 m-auto">
@@ -417,6 +422,35 @@ useEffect(() => {
                     <small className="text-gray-500 dark:text-gray-400">
                       {format(item.createdAt, "vi")}
                     </small>
+                    {user?.role === "admin" && (
+                      <button
+                        className="text-sm text-blue-500 mt-2"
+                        onClick={() => {
+                          setIsReviewReply(!isReviewReply);
+                          setReviewId(item._id);
+                        }}
+                      >
+                        Reply
+                      </button>
+                    )}
+                    {isReviewReply && reviewId === item._id && (
+                    <div className="flex items-center gap-2 mt-3">
+                      <input
+                        type="text"
+                        placeholder="Nhập phản hồi..."
+                        value={reply}
+                        onChange={(e) => setReply(e.target.value)}
+                        className="border p-2 rounded w-full"
+                      />
+
+                      <button
+                        className="bg-blue-500 text-white px-3 py-2 rounded"
+                        onClick={() => handleReviewReplySubmit(item._id)}
+                      >
+                        Send
+                      </button>
+                    </div>
+                  )}
                     {item.commentReplies?.map((reply: any) => (
                       <div key={reply._id} className="flex gap-3 mt-4 ml-12">
                         <Image
