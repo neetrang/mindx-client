@@ -52,12 +52,14 @@ useEffect(() => {
     setSocialReady(true);
   };
 
-  handleSocialAuth();
-}, [session]);
+  if (status === "authenticated" || status === "unauthenticated") {
+    handleSocialAuth();
+  }
+}, [status]);
 
-  // 🔥 2️⃣ Chỉ gọi /me sau khi social-auth hoàn thành
-  const { isLoading } = useLoadUserQuery(undefined, {
-  skip: status === "loading",
+  
+const { isLoading } = useLoadUserQuery(undefined, {
+  skip: !socialReady,
 });
 
   useEffect(() => {

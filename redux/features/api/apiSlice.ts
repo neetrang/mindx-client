@@ -10,9 +10,8 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // nếu access token hết hạn
   if (result?.error?.status === 401) {
-    console.log("Access token expired → refreshing...");
+    console.log("Access token expired → trying refresh");
 
     const refreshResult: any = await baseQuery(
       {
@@ -23,13 +22,19 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
       extraOptions
     );
 
+    // refresh thành công
     if (refreshResult?.data) {
       console.log("Token refreshed");
 
-      // gọi lại request ban đầu
       result = await baseQuery(args, api, extraOptions);
     } else {
+      console.log("Refresh token expired → logout");
+
       api.dispatch(userLoggedOut());
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
   }
 
