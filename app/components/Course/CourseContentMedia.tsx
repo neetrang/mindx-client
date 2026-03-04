@@ -417,6 +417,34 @@ useEffect(() => {
                     <small className="text-gray-500 dark:text-gray-400">
                       {format(item.createdAt, "vi")}
                     </small>
+                    {item.commentReplies?.map((reply: any) => (
+                      <div key={reply._id} className="flex gap-3 mt-4 ml-12">
+                        <Image
+                          src={
+                            reply.user.avatar?.url ||
+                            "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+                          }
+                          width={40}
+                          height={40}
+                          alt=""
+                          className="w-[40px] h-[40px] rounded-full object-cover"
+                        />
+
+                        <div>
+                          <h5 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                            {reply.user.name}
+                          </h5>
+
+                          <p className="text-gray-700 dark:text-gray-300 break-words">
+                            {reply.comment}
+                          </p>
+
+                          <small className="text-gray-500">
+                            {format(reply.createdAt, "vi")}
+                          </small>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   </div>
                 </div>
