@@ -399,141 +399,161 @@ useEffect(() => {
                   key={item._id}
                   className="bg-white dark:bg-slate-800 border dark:border-white/10 rounded-xl p-4 shadow-sm"
                 >
-                  <div className="flex gap-3">
+                <div className="flex gap-3">
                     <Image
-                      src={item.user.avatar?.url || "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"}
+                      src={
+                        item.user.avatar?.url ||
+                        "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+                      }
                       width={50}
                       height={50}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full object-cover"
                     />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100">
-                        {item.user.name}
-                      </h4>
-                      <Ratings rating={item.rating} />
-                      <span className="text-xs text-gray-500">
-                      {format(item.createdAt, "vi")}
-                    </span>
-                    </div>
 
-                    <p className="mt-1 text-gray-800 dark:text-gray-300 break-words">
-                      {item.comment}
-                    </p>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-blue-500">
-                    {user?.role === "admin" &&
-                    !item.commentReplies?.some((r: any) => r.user.role === "admin") && (
-                      <button
-                      className=" hover:underline"
-                      onClick={() => {
-                        setIsReviewReply(!isReviewReply);
-                        setReviewId(item._id);
-                      }}
-                      >
-                      {isReviewReply && reviewId === item._id
-                        ? "Ẩn phản hồi"
-                        : item.commentReplies?.length > 0
-                        ? `Xem ${item.commentReplies.length} phản hồi`
-                        : "Phản hồi"}
-                    </button>
-                    )}
-          </div>
-                    {user?.role === "admin" &&
-                    !item.commentReplies?.some((r: any) => r.user.role === "admin") &&
-                    isReviewReply &&
-                    reviewId === item._id && (
-                    <div className="flex gap-2 pt-3">
-                      <input
-                        type="text"
-                        placeholder="Nhập phản hồi..."
-                        value={reply}
-                        onChange={(e) => setReply(e.target.value)}
-                        className="
-                          flex-1 rounded-lg px-3 py-2
-                          bg-white dark:bg-slate-800
-                          text-gray-800 dark:text-gray-200
-                          placeholder-gray-400 dark:placeholder-gray-500
-                          border border-gray-200 dark:border-white/10
-                          text-sm outline-none
-                          focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                          transition
-                        "
-                      />
-                
-                      <button
-                        onClick={() => handleReviewReplySubmit(item._id)}
-                        className="
-                          px-4 py-2 rounded-lg
-                bg-blue-500 text-white
-                hover:bg-blue-600
-                active:scale-95
-                disabled:opacity-50 disabled:cursor-not-allowed
-                transition
-                        "
-                      >
-                        Gửi
-                      </button>
-                    </div>
-                  )}
-                    {item.commentReplies?.length > 0 && (
-                      <div
-                        className="
-                          mt-4 ml-10 space-y-3 pl-4
-                          border-l border-gray-200 dark:border-white/10
-                        "
-                      >
-                        {item.commentReplies.map((reply: any, index: number) => (
-                          <div
-                            key={reply._id ?? index}
-                            className={`
-                              flex gap-3 p-3 rounded-xl
-                              transition
-                              ${
-                                reply.user.role === "admin"
-                                  ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-300/30"
-                                  : "bg-gray-100 dark:bg-slate-700"
-                              }
-                            `}
-                          >
-                            <Image
-                              src={
-                                reply.user.avatar?.url ||
-                                "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
-                              }
-                              width={40}
-                              height={40}
-                              alt=""
-                              className="w-[40px] h-[40px] rounded-full object-cover"
-                            />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-black dark:text-white">
+                            {item.user.name}
+                          </h4>
 
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
-                                  {reply.user.name}
-                                </span>
+                          <Ratings rating={item.rating} />
+                        </div>
 
-                                {reply.user.role === "admin" && (
-                                  <span className="text-[10px] px-2 py-[2px] rounded-full bg-blue-500 text-white">
-                                    Admin
-                                  </span>
-                                )}
-                              </div>
-
-                              <p className="text-sm mt-1 text-gray-800 dark:text-gray-200 break-words">
-                                {reply.comment}
-                              </p>
-
-                              <small className="text-xs text-gray-500 dark:text-gray-400">
-                                {format(reply.createdAt, "vi")}
-                              </small>
-                            </div>
-                          </div>
-                        ))}
+                        <span className="text-xs text-gray-500">
+                          {format(item.createdAt, "vi")}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                  </div>
+
+                      <p className="mt-1 text-gray-800 dark:text-gray-200">
+                        {item.comment}
+                      </p>
+
+                      {/* ACTION */}
+                      <div className="flex items-center gap-4 mt-2 text-sm text-blue-500">
+                        {user?.role === "admin" &&
+                          !item.commentReplies?.some((r: any) => r.user.role === "admin") && (
+                            <button
+                              onClick={() => {
+                                setIsReviewReply(!isReviewReply);
+                                setReviewId(item._id);
+                              }}
+                              className="hover:underline"
+                            >
+                              {isReviewReply && reviewId === item._id
+                                ? "Ẩn phản hồi"
+                                : item.commentReplies?.length > 0
+                                ? `Xem ${item.commentReplies.length} phản hồi`
+                                : "Phản hồi"}
+                            </button>
+                          )}
+
+                        <span className="text-gray-400 flex items-center gap-1">
+                          <BiMessage size={16} /> {item.commentReplies?.length || 0}
+                        </span>
+                      </div>
+
+                      {/* THREAD */}
+                      {(item.commentReplies?.length > 0 ||
+                        (isReviewReply && reviewId === item._id)) && (
+                        <div
+                          className="
+                            mt-4 ml-10 space-y-3 pl-4
+                            border-l border-gray-200 dark:border-white/10
+                          "
+                        >
+                          {item.commentReplies?.map((reply: any, index: number) => (
+                            <div
+                              key={reply._id ?? index}
+                              className={`
+                                flex gap-3 p-3 rounded-xl
+                                transition
+                                ${
+                                  reply.user.role === "admin"
+                                    ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-300/30"
+                                    : "bg-gray-100 dark:bg-slate-700"
+                                }
+                              `}
+                            >
+                              <Image
+                                src={
+                                  reply.user.avatar?.url ||
+                                  "https://res.cloudinary.com/dm16ncix5/image/upload/v1765384995/avatar_qudmto.png"
+                                }
+                                width={40}
+                                height={40}
+                                alt=""
+                                className="w-[40px] h-[40px] rounded-full object-cover"
+                              />
+
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                                    {reply.user.name}
+                                  </span>
+
+                                  {reply.user.role === "admin" && (
+                                    <span className="text-[10px] px-2 py-[2px] rounded-full bg-blue-500 text-white">
+                                      Admin
+                                    </span>
+                                  )}
+                                </div>
+
+                                <p className="text-sm mt-1 text-gray-800 dark:text-gray-200 break-words">
+                                  {reply.comment}
+                                </p>
+
+                                <small className="text-xs text-gray-500 dark:text-gray-400">
+                                  {format(reply.createdAt, "vi")}
+                                </small>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* INPUT REPLY */}
+                          {user?.role === "admin" &&
+                            !item.commentReplies?.some(
+                              (r: any) => r.user.role === "admin"
+                            ) &&
+                            isReviewReply &&
+                            reviewId === item._id && (
+                              <div className="flex gap-2 pt-3">
+                                <input
+                                  type="text"
+                                  placeholder="Nhập phản hồi..."
+                                  value={reply}
+                                  onChange={(e) => setReply(e.target.value)}
+                                  className="
+                                    flex-1 rounded-lg px-3 py-2
+                                    bg-white dark:bg-slate-800
+                                    text-gray-800 dark:text-gray-200
+                                    placeholder-gray-400 dark:placeholder-gray-500
+                                    border border-gray-200 dark:border-white/10
+                                    text-sm outline-none
+                                    focus:ring-2 focus:ring-blue-500
+                                    transition
+                                  "
+                                />
+
+                                <button
+                                  onClick={() => handleReviewReplySubmit(item._id)}
+                                  className="
+                                    px-4 py-2 rounded-lg
+                                    bg-blue-500 text-white
+                                    hover:bg-blue-600
+                                    active:scale-95
+                                    transition
+                                  "
+                                >
+                                  Gửi
+                                </button>
+                              </div>
+                            )}
+                        </div>
+                      )}
+                    </div>
+                </div>
                 </div>
               ))}
           </div>
