@@ -704,8 +704,8 @@ const CommentItem = ({
 
                 <small className="text-xs text-gray-500 dark:text-gray-400">
                   {format(reply.createdAt, "vi")}
-                </small>
-              </div>
+                </small> 
+              </div> 
             </div>
           ))}
 

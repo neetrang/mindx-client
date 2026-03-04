@@ -28,37 +28,37 @@ const InnerProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
 
   // 🔥 1️⃣ Gọi social-auth và chờ hoàn thành
-  useEffect(() => {
-    const handleSocialAuth = async () => {
-      if (session?.user) {
-        try {
-          await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/social-auth`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              email: session.user.email,
-              name: session.user.name,
-              avatar: session.user.image,
-            }),
-          });
-
-          setSocialReady(true); // 🔥 chỉ khi cookie set xong
-        } catch (err) {
-          console.error("Social auth failed:", err);
-        }
+useEffect(() => {
+  const handleSocialAuth = async () => {
+    if (session?.user) {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/social-auth`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            email: session.user.email,
+            name: session.user.name,
+            avatar: session.user.image,
+          }),
+        });
+      } catch (err) {
+        console.error("Social auth failed:", err);
       }
-    };
+    }
 
-    handleSocialAuth();
-  }, [session]);
+    setSocialReady(true);
+  };
+
+  handleSocialAuth();
+}, [session]);
 
   // 🔥 2️⃣ Chỉ gọi /me sau khi social-auth hoàn thành
   const { isLoading } = useLoadUserQuery(undefined, {
-    skip: !socialReady,
-  });
+  skip: status === "loading",
+});
 
   useEffect(() => {
     setMounted(true);
